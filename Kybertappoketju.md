@@ -1,4 +1,4 @@
-## x) Lue / katso / kuuntele ja tiivistä
+<img width="847" height="208" alt="image" src="https://github.com/user-attachments/assets/bb8642fa-b02d-4d8e-b328-12d87359165e" />## x) Lue / katso / kuuntele ja tiivistä
 ### 1. Podcast: Herrasmieshakkerit – Jakso 0x45: Erikoistilanteiden asiantuntija, vieraana Juhani Mäkinen (16.6.2026)
 **Tiivistelmä:**
 * Jaksossa käsitellään Applen tietoturvaa, *core crypto* -kirjaston verifiointia sekä macOS-kernelin muistinkorruptiohaavoittuvuuksia.
@@ -64,3 +64,63 @@ Kokeilen avata koneen suoraan kansiosta, koska en ole aiemmin näin tehnyt. Lis�
 * Valmiit Guest Additions -lisäosat: VirtualBoxin integrointityökalut (esim. näytön resoluution automaattinen skaalautuvuus, leikepöydän jako ja hiiren saumaton käyttö) on esiasennettu ja konfiguroitu valmiiksi.
 
 Yhteenveto: Prebuilt-kuva osoittautui erinomaiseksi ja erittäin nopeaksi ratkaisuksi laboratorioympäristöön, sillä se säästi aikaa itse tehtävien suorittamiseen ilman asennusvaiheen kikkailua. Asennuksessa ei ilmennyt ongelmia.
+
+
+## b) Verkkoyhteyden katkaiseminen
+
+<img width="563" height="266" alt="image" src="https://github.com/user-attachments/assets/74433a6e-ff2d-464d-9f91-dfa5bfd1c1a2" />
+
+```bash
+# Asetusmuutos VirtualBoxissa:
+# Settings -> Network -> Adapter 1 -> Attached to: "Not Attached"
+
+# Yhteyden testaus Kalin terminaalissa:
+```
+
+<img width="359" height="60" alt="image" src="https://github.com/user-attachments/assets/35d51789-47de-4128-b3f1-a91816e38325" />
+
+
+
+## c) Nmap localhost porttiskannaus  
+
+<img width="847" height="208" alt="image" src="https://github.com/user-attachments/assets/2653cf1e-c57a-42d7-aed4-c838f22e3f34" />
+
+Komento **sudo nmap -T4 -A localhost**
+* -T4 (Timing template): Asettaa skannauksen aikaprofiiliksi tasolle 4/5 ("Aggressive"). Tämä nopeuttaa skannausta lyhentämällä viiveitä ja timeout-aikoja, mikä sopii hyvin nopeisiin lähiverkko- tai localhost-skannauksiin.
+* -A (Aggressive scan option): Kytkee päälle useita kehittyneitä tunnistusominaisuuksia:
+  *   Käyttöjärjestelmän tunnistus (OS detection, -O)
+  * Palvelujen versiotunnistus (Version detection, -sV)
+  * Skriptiskannaus (Script scanning, -sC / NSE-skriptit)
+  * Traceroute
+ 
+* Kohde **localhost**
+* Jos porttien skannausaluetta ei erikseen määritetä Nmap skannaa 1000 yleisintä porttia kohdeosoitteesta tässä tapauksessa localhost:sta (127.0.0.1)
+
+Komennon tulos:
+* Skannauksen tuloksena kaikkien 1 000 skannatun portin tilaksi palautui closed.
+* Portit ovat suljettuja, eli kone vastasi skannauspaketteihin, mutta mikään sovellus tai palvelu ei kuuntele näissä porteissa pyyntöjä.
+
+
+## d) Demonien asennus ja uudelleenskannaus 
+Päivitin koneen ja asensin kaksi demonia tuttu apache2 ja uusi vsftpd FTP palvelin:
+
+```bash
+sudo apt update
+sudo apt install  apache2
+sudo apt install  vsftpd
+sudo systemctl start apache2 vsftpd
+```
+
+<img width="770" height="86" alt="image" src="https://github.com/user-attachments/assets/7de03c82-a8db-43dd-8d13-9dcf3b39886c" />
+
+<img width="728" height="81" alt="image" src="https://github.com/user-attachments/assets/16baaddf-5d03-46ba-914c-e4f4294f096d" />
+
+Uudellenskannaus:
+
+```bash
+sudo nmap -T4 -A localhost
+```
+
+<img width="2396" height="315" alt="image" src="https://github.com/user-attachments/assets/5ba5b227-7f39-4481-9507-f8a2f7323937" />
+
+
