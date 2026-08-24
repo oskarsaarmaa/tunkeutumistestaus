@@ -30,3 +30,37 @@
  * Ratkaisussa käsiteltiin tietomurron tunnusmerkistöä ja luvattoman käytön rajoja Suomen rikoslain mukaan.
  * Suojauksen kiertäminen tai murtaminen ilman lupaa täyttää tietomurron tunnusmerkistön, vaikka järjestelmälle ei aiheutettaisi suoranaista vahinkoa.
  * **Oma huomio / idea:** Suomen laissa raja luvallisen testauksen ja rikoksen välillä on ehdoton. Kaikki penetraatiotestaus vaatii aina etukäteen sovitun kirjallisen luvan (Rules of Engagement) tai suljetun labraympäristön.
+
+
+## a) Asenna Kali virtuaalikoneeseen
+* Latasin ensimmäistä kertaa valmiin prebuilt-virtuaalikonekuvan manuaalisen ISO-asennuksen sijaan ja importtasin sen VirtualBoxiin. Kalin kotisivu josta latasin virtuaalikoneen:
+```bash
+    https://www.kali.org/get-kali/#kali-virtual-machines
+```
+Purkasin WinRar paketin, kanison sisältö:
+
+<img width="645" height="124" alt="image" src="https://github.com/user-attachments/assets/46f8bd04-5310-45e6-97ed-e8c1900e3343" />
+
+Pre-built on kätevä sillä että voin ohittaa uuden koneen luomisen ja suoraan avata virtuaalikoneen kansiosta tuplaklikkaamalla sitä, tai vaihoehtoisesti lisätä sen VirtualBoxissa itsessään Add -> Virtual Machine -> kali-linux-2026.2-virtualbox-amd64 -> start.
+Kokeilen avata koneen suoraan kansiosta, koska en ole aiemmin näin tehnyt. Lisäsin koneen, Kali konfiguroi koneen näin:
+
+
+<img width="536" height="561" alt="image" src="https://github.com/user-attachments/assets/9f2a26a7-131c-4265-b648-864fc9436151" />
+
+<img width="408" height="126" alt="image" src="https://github.com/user-attachments/assets/2b088db6-636a-4923-bdf4-b22d5c558805" />
+
+
+
+* Mielestäni ovat varanneet koneelle liian vähän rautaa, mutta kokeilen onnistuuko näillä ja toki kirjautumistunnukset olisi hyvä vaihtaa. Guest Addition:it toimii oikein ja kone ei vaikuta hitaalta :) näyttää olevan myös kaikki kali:n työkalut, tähän saakka pre-built on ollut todella kätevä.
+
+
+
+
+
+
+### Miten prebuilt-kuva poikkeaa perus ISO-asennuksesta?
+* Prebuilt VM (Valmis kuva):
+* Vaivattomuus ja nopeus: Asennusvaihetta (kielen valinta, osiointi, käyttäjien luonti) ei tarvitse käydä läpi, vaan kone on käyttövalmis minuuteissa.
+* Valmiit Guest Additions -lisäosat: VirtualBoxin integrointityökalut (esim. näytön resoluution automaattinen skaalautuvuus, leikepöydän jako ja hiiren saumaton käyttö) on esiasennettu ja konfiguroitu valmiiksi.
+
+Yhteenveto: Prebuilt-kuva osoittautui erinomaiseksi ja erittäin nopeaksi ratkaisuksi laboratorioympäristöön, sillä se säästi aikaa itse tehtävien suorittamiseen ilman asennusvaiheen kikkailua. Asennuksessa ei ilmennyt ongelmia.
