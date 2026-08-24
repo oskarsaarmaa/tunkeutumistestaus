@@ -131,4 +131,63 @@ Skannauksen tulos:
 * Versiotunnistus: Nmap tunnisti portissa 21 pyörivän vsftpd 3.0.5 -palvelun ja portissa 80 Apache httpd 2.4.62 -web-palvelimen. Skanni sai myös selville apache2 oletussivun otsikon (Debian's Apache2 Default Page).
 * Ero c-kohtaan: Ennen palveluiden asentamista kaikkien 1 000 portin tila oli closed. Palveluiden käynnistämisen jälkeen portit 21 ja 80 avattiin palveluiden pyörittämisen syystä, Nmap kykeni tunnistamaan sekä avoimet portit että niissä pyörivät sovellusversiot.
 
-## e) Hack The Box
+## e) Hack The Box tehtävä: Fawn
+
+### Ratkaisin OpenVPN-yhteydellä Hack The Boxin **Fawn** tehtävän. 
+
+<img width="1437" height="606" alt="image" src="https://github.com/user-attachments/assets/e13d456b-a5a7-4ef2-9b58-3182772acffa" />
+
+### VPN-yhteys ja Ping-testi:
+* Loin yhteyden Hack The Box verkkoon latamalla .ovpn profiilini ja ajamalla komento:
+  
+<img width="460" height="581" alt="image" src="https://github.com/user-attachments/assets/493cb489-3335-4f75-9663-ac60305ec896" />
+
+<img width="387" height="65" alt="image" src="https://github.com/user-attachments/assets/627ee630-9a5e-46af-90a6-5193c0927b7d" />
+
+
+  ```bash
+  sudo openvpn starting_points_eu-starting-point-2-dhcp.ovpn
+  ```
+<img width="970" height="1071" alt="image" src="https://github.com/user-attachments/assets/d9a87ff5-50e1-49f9-8878-0018cad33e19" />
+
+
+* Nyt olen yhdistäytynyt Hack The Box verkkoon OpenVPN avulla.
+
+
+Testaan saanko yhteyttä Fawn koneseen **ping** komennon avulla:
+
+<img width="565" height="187" alt="image" src="https://github.com/user-attachments/assets/297bd614-e0ff-402b-ab95-6db35783d01a" />
+
+Fawn koneseen kohdistuva Nmap skanni -sV lipun avulla, lippu skannaa avoimet portit ja palvelut kohdeosoitteessa + ottaa selvää millä versiolla palvelut pyörivät ja mahdollisesti minkä käyttöjärjestelmällä kone pyörii:
+
+
+### Nmap skannaus
+```bash
+sudo nmap -sV 10.129.176.75
+
+```
+
+<img width="782" height="203" alt="image" src="https://github.com/user-attachments/assets/03f999e9-30ec-44c7-b05f-139148e4b1fd" />
+
+* Skannista tuloksesta huomaa, että portti 21 on auki ja siinä pyörii vsftpd (ftp) palvelu/demoni, ja pyörii Unix:lla.
+
+  
+### FTP kirjautuminen 
+Hack The Box tehtävänanto vihjasi FTP-protokollan perusominaisuuksista, ja pienen googlailun jälkeen sain tietää että FTP-palvelimien oletustunnus on **anonymous** ja Fawn FTP-palvelimella ei ollut salasanaa määritetty ollenkaan pääsi kirjautumaan **Entetiä** painamalla ilmesty koodi: 230 kirjautuminen meni läpi.
+Otin yhteyttä FTP palvelimelle: 
+
+```bash
+ftp 10.129.176.75
+Name: anonymous
+Password: - (enter)
+ls -> näkyy flag.txt
+get flag.txt
+exit
+```
+
+<img width="1249" height="390" alt="image" src="https://github.com/user-attachments/assets/97dd1ee2-8f75-40c3-be65-00f490ab7cc6" />
+
+Omalla koneella luettiin tiedoston sisältö cat flag.txt -komennolla, josta saatiin tehtävän lippu: 035db21c881520061c53e0536e44f815.
+
+<img width="278" height="56" alt="image" src="https://github.com/user-attachments/assets/99e55b83-5b9f-42fc-b184-d7a41181978e" />
+
