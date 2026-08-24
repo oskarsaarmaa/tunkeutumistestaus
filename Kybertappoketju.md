@@ -1,4 +1,4 @@
-<img width="847" height="208" alt="image" src="https://github.com/user-attachments/assets/bb8642fa-b02d-4d8e-b328-12d87359165e" />## x) Lue / katso / kuuntele ja tiivistä
+ ## x) Lue / katso / kuuntele ja tiivistä
 ### 1. Podcast: Herrasmieshakkerit – Jakso 0x45: Erikoistilanteiden asiantuntija, vieraana Juhani Mäkinen (16.6.2026)
 **Tiivistelmä:**
 * Jaksossa käsitellään Applen tietoturvaa, *core crypto* -kirjaston verifiointia sekä macOS-kernelin muistinkorruptiohaavoittuvuuksia.
@@ -121,6 +121,14 @@ Uudellenskannaus:
 sudo nmap -T4 -A localhost
 ```
 
+
 <img width="2396" height="315" alt="image" src="https://github.com/user-attachments/assets/5ba5b227-7f39-4481-9507-f8a2f7323937" />
 
 
+Skannauksen tulos:
+* Avoimet portit: Skannaus havaitsi kaksi avointa porttia: 21/tcp (FTP) ja 80/tcp (HTTP)
+* Nmap sai selville korkealla todennäköisyydellä, että skannattu kohde käyttää Linux käyttöjärjestelmää.
+* Versiotunnistus: Nmap tunnisti portissa 21 pyörivän vsftpd 3.0.5 -palvelun ja portissa 80 Apache httpd 2.4.62 -web-palvelimen. Skanni sai myös selville apache2 oletussivun otsikon (Debian's Apache2 Default Page).
+* Ero c-kohtaan: Ennen palveluiden asentamista kaikkien 1 000 portin tila oli closed. Palveluiden käynnistämisen jälkeen portit 21 ja 80 avattiin palveluiden pyörittämisen syystä, Nmap kykeni tunnistamaan sekä avoimet portit että niissä pyörivät sovellusversiot.
+
+## e) Hack The Box
