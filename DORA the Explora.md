@@ -66,7 +66,59 @@ Kuva piirretty: https://asciiflow.com/#/
 * Metasploitable 2
    * Määritin koneen verkkokortin `Host-Only Adapter` tilaan ja jätin täplän `Virtual Cable Connected` asetukseen
    * Verkkokortti sai nimen `eth0` ja osoitteen `192.168.56.102/24`
-* Maalikone on eristetty samaan verkkoon Kali koneen kanssa 
+* Maalikone on eristetty samaan verkkoon Kali koneen kanssa
+
+Yhteenveto:
+
+Loin täysin suljetun ja turvallisen Host-Only testiympäristön, tämä mahdollistaa nmap-skannaukset ja hyökkäystestit turvallisesti ilman riskiä liikenteen vuotamisesta ulkoverkkoon.
 
 Lähde:
 https://www.virtualbox.org/manual/ch06.html
+
+## c) Kali ja Metasploitable koneiden IP-osoitteet ja yhteyden testaaminen
+
+Varmistin virtuaalikoneiden verkkokorttien IP-osoitteet ajamalla molemmissa koneissa `ip address` komennolla:
+
+* **Kali Linux (`eth1`):** `192.168.56.101/24`
+<img width="838" height="265" alt="image" src="https://github.com/user-attachments/assets/34165f80-ba81-49b4-9956-15db371b60fa" />
+
+
+
+  
+* **Metasploitable 2 (`eth0`):** `192.168.56.102/24`
+<img width="719" height="182" alt="image" src="https://github.com/user-attachments/assets/e3527ec9-c765-4657-89ff-faa467ccdbf4" />
+
+
+
+
+
+Verkkoyhteyden testaamiseen pingaan Kali koneelta (`192.168.56.101/24`) Metasploit konetta (`192.168.56.102/24`):
+
+
+<img width="317" height="70" alt="image" src="https://github.com/user-attachments/assets/6db4da15-fa81-4c7e-a029-504f76de810c" />
+
+* Kali kone ei ole yhteydessä internettiin!
+
+Kali -> Metasploitable
+
+<img width="517" height="190" alt="image" src="https://github.com/user-attachments/assets/c8b329f4-82dc-4954-9cfb-1cb30e32a259" />
+
+
+
+Metasploitable -> kali
+
+<img width="606" height="165" alt="image" src="https://github.com/user-attachments/assets/e5d8e139-0f5d-45e2-920a-8119bd7f3f78" />
+
+
+
+Yhteenveto:
+
+Ping komennot menee läpi molempiin suuntiin, ja on verkko on kokonaan eristetty.
+
+
+
+
+
+
+
+  
