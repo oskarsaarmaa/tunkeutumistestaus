@@ -4,6 +4,8 @@
 * Jaksossa käydään läpi Applen laitteistotason tietoturvaa, core crypto -kirjaston verifiointia ja macOS-kernelin muistinkorruptiohaavoittuvuuksia.
 * Keskustelussa sivutaan myös kriisinhallintaa ja erikoisjoukkotoimintaa Afganistanissa (Liittyen Juhani Mäkisen *Kontakti*-kirjaan).
 * Lisäksi jaksossa käsitellään Suomen Pelimuseon uudistusta ja Peter Steinbergerin TED-puheenvuoroa.
+
+  Lähde: https://herrasmieshakkerit.fi/
   
 ## 2. Hutchins et al. 2011: Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains
  **Tiivistelmä:**
@@ -17,16 +19,21 @@
 * **7. Actions on Objectives** (Tavoitteen toteutus, esim. datavarkaus tai tuho)
  * Puolustajan näkökulmasta oleellista on se, että hyökkääjän pitää onnistua jokaisessa 7 vaiheessa peräkkäin. Jos ketju saadaan katki missä tahansa kohtaa, hyökkäys epäonnistuu.
 
+Lähde: https://lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/LM-White-Paper-Intel-Driven-Defense.pdf
+
 ### 3. Santos et al.: The Art of Hacking – 4.3 Surveying Essential Tools for Active Reconnaissance
 **Tiivistelmä:**
 * Videokokonaisuudessa käydään läpi aktiivisen tiedustelun perustyökaluja, kuten Nmap, Masscan ja Netcat.
 * Aktiivinen tiedustelu poikkeaa passiivisesta (OSINT) siinä, että se lähettää paketteja suoraan kohdejärjestelmään ja jättää aina jälkiä kohdekoneen tai palomuurin lokitietoihin.
 * Porttiskannauksella selvitetään avoimet portit, niissä pyörivät palvelut (daemonit) sekä palveluiden versiot hyökkäyspinnan hahmottamiseksi.
 
+Lähde: https://www.oreilly.com/videos/the-art-of/9780135767849/9780135767849-SPTT_04_00/
+
 ### 4. KKO 2003:36
  **Tiivistelmä:**
  * Ratkaisussa käsiteltiin tietomurron tunnusmerkistöä ja luvattoman käytön rajoja Suomen rikoslain mukaan.
  * Suojauksen kiertäminen tai murtaminen ilman lupaa täyttää tietomurron tunnusmerkistön, vaikka järjestelmälle ei aiheutettaisi suoranaista vahinkoa.
+Lähde: https://www.finlex.fi/fi/oikeuskaytanto/korkein-oikeus/ennakkopaatokset/2003/36
 
 
 ## a) Asenna Kali virtuaalikoneeseen
@@ -187,4 +194,11 @@ exit
 Omalla koneella luettiin tiedoston sisältö cat flag.txt -komennolla, josta saatiin tehtävän lippu: 035db21c881520061c53e0536e44f815.
 
 <img width="278" height="56" alt="image" src="https://github.com/user-attachments/assets/99e55b83-5b9f-42fc-b184-d7a41181978e" />
+
+
+### Lähdeluettelo:
+https://herrasmieshakkerit.fi/
+https://www.oreilly.com/videos/the-art-of/9780135767849/9780135767849-SPTT_04_00/
+https://www.finlex.fi/fi/oikeuskaytanto/korkein-oikeus/ennakkopaatokset/2003/36
+https://lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/LM-White-Paper-Intel-Driven-Defense.pdf
 
