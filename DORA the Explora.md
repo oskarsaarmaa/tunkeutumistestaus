@@ -385,6 +385,23 @@ Lähde: https://nvd.nist.gov/vuln/detail/cve-2011-2523
 
 ## g) Metasploit hyökkäysohjelman kokeilu
 
+<img width="736" height="150" alt="image" src="https://github.com/user-attachments/assets/64e8f94a-db84-449c-8017-622db6d0a981" />
+
+<img width="763" height="573" alt="image" src="https://github.com/user-attachments/assets/559a0a1e-6a07-4fb8-9025-06de3bac57ad" />
+
+Alustin Metasploitin tarvitsema PostgreSQL-tietokanta komennolla `sudo msfdb init`. Komento luo tarvittavat käyttäjät, tietokantakentät ja konfiguraatiot `database.yml`:ään, jotta hakutulokset ja hyökkäysistunnot tallentuisivat. Käynnistin Metasploit Framework komennolla `msfconsole` mikä avasi komentoriviliittymän. Kävin myös katsomassa mitä `database.yml` löytyy:
+
+
+
+
+<img width="1263" height="82" alt="image" src="https://github.com/user-attachments/assets/daa7ba7f-68d4-433b-bf60-8d76bed071e3" />
+
+<img width="952" height="543" alt="image" src="https://github.com/user-attachments/assets/2d53c360-b997-4aec-ab0f-59c84b90df07" />
+
+Havainnot:
+
+*  `database.yml` määrittää miten metasploit ottaa yhteyden PostgreSQL-tietokantaan `host: localhost` `portilla 5432`
+
 
 ## Lähteet: 
 x)
