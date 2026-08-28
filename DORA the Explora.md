@@ -406,13 +406,30 @@ Havainnot:
 ## Lähteet: 
 x)
 
+https://terokarvinen.com/tunkeutumistestaus/
+
+https://terokarvinen.com/buuri-2026-dora-and-threat-lead-penetration-testing/buuri-2026-dora-and-threat-lead-penetration-testing--teros-pentest-course.pdf
+
+https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng
+
+https://www.suomenpankki.fi/globalassets/bof/en/money-and-payments/the-bank-of-finland-as-catalyst-payments-council/tiber-fi/tiber-fi-2.0-procedures-and-guidelines.pdf
+
+
 a)
+
+ https://sourceforge.net/projects/metasploitable/
 
 b)
 
+ https://asciiflow.com/#/
+ https://www.virtualbox.org/manual/ch06.html
+
 c)
+-
 
 d)
+
+https://nmap.org/book/man-port-scanning-basics.html
 
 Nmap Network Scanning (Official Guide): Lyon, G. (2009). Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning. Section 5.4: Stealth Scans (-sN, -sF, -sX). Saatavilla: https://nmap.org/book/man-port-scanning-techniques.html
 
@@ -435,7 +452,7 @@ f)
 https://nvd.nist.gov/vuln/detail/cve-2011-2523
 
 g) 
-
+https://www.kali.org/tools/metasploit-framework/
 
 
 
