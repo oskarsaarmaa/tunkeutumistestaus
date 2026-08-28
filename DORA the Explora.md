@@ -115,8 +115,52 @@ Yhteenveto:
 
 Ping komennot menee läpi molempiin suuntiin, ja on verkko on kokonaan eristetty.
 
+## d) Nmap skannaus Metasploitale2 koneesta
+
+`nmap -sN 192.168.56.102`
+
+<img width="622" height="549" alt="image" src="https://github.com/user-attachments/assets/65a3ef61-4450-43b7-a6ed-71addcfc5a2b" />
+
+### Nmap -sN (TCP Null Scan) -skannauksen analyysi:
+* `-sN` lipun toimintaperiaate: Skannaus lähettää maalikoneeseen TCP-paketteja, joissa yksikään ohjauslippu (kuten SYN, ACK tai FIN) ei ole päällä (Null Scan).
+* Ohjausliput:
+    * `SYN`: (Synchronize) on yhteyden avaava kutsu. Tätä käytetään TCP-yhteydenottokättelyn ensimmäisessä vaiheessa.
+    * `ACK`: (Acknowledge) on pakettien kuittaus. Vahvistaa, että vastaanottaja sai edellisen paketin perille.
+    * `FIN`: (Finish) on yhteyden hallittu lopetus. . Käytetään, kun tiedonsiirto on valmis ja halutaan sulkea kanava.
+    * `Null Scan`: On skannaus, jossa maalikoneeseen lähetetään "tyhjä" TCP-paketti ilman yhtäkään edellä mainituista ohjauslipuista.
+* Miksi tila on `open|filtered`:
+    * Jos portti on suljettu, kone vastaa heti takaisin "RST" (yhteys hylätty).
+    * Jos portti taas on auki, se vain ihmettelee tyhjää pakettia eikä vastaa siihen mitään.
+    * Koska vastattomuus voi johtua myös siitä, että välissä oleva palomuuri blokkasi paketin kokonaan, Nmap ei voi tietää varmaksi, onko portti oikeasti auki vai tilanteessa välissä palomuuri. Siksi se ilmoittaa tilaksi `open|filtered`.
+
+* `-sN` lippu vs. `-sV` lippu:
+    * `-sN` (Null Scan): Lähettää tyhjiä TCP-paketteja ilman lippuja. Se yrittää selvittää avoimet portit huomaamattomasti, mutta ilmoittaa avoimet portit epävarmoina muodossa `open|filtered` eikä tunnista sovellusversioita.
+    * `-sV` (Version Scan): Skannaa avoimet portit ja kättelee palveluiden kanssa tunnistaakseen niissä pyörivät tärkeät sovellukset sekä niiden tarkat versiot. `-sV` lipun kanssa skannateessa on isompi mahdollisuus jäädä kiinni verrattuna `-sN` lipun kanssa skannamiseen.
+  
 
 
+
+Metasploitable2 webbipalvelimen etusivu osoitteessa: `http://192.168.56.102`
+
+<img width="575" height="524" alt="image" src="https://github.com/user-attachments/assets/88890d1d-78be-4703-8dd6-63dc45b05a09" />
+
+
+## Lähteet: 
+x)
+
+a)
+
+b)
+
+c)
+
+d)
+
+Nmap Network Scanning (Official Guide): Lyon, G. (2009). Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning. Section 5.4: Stealth Scans (-sN, -sF, -sX). Saatavilla: https://nmap.org/book/man-port-scanning-techniques.html
+
+Kali Linux Documentation: Port Scanning Techniques and Service Enumeration. Saatavilla: https://www.kali.org/tools/nmap/
+
+RFC 793 (TCP Specification): Postel, J. (1981). Transmission Control Protocol - DARPA (Erityisesti osio 3.9 TCP-lippujen ja vastausten toiminnasta) Saatavilla: https://datatracker.ietf.org/doc/html/rfc793
 
 
 
