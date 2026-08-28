@@ -364,6 +364,28 @@ Portti 3632 TCP
 * Vaikutus: Oletusasetuksilla ilman konfiguraatiota `distcc` hyväksyy minkä tahansa käännöskennokseen lähetetyn komennon ilman minkäänlaista käyttäjän tunnistautumista.
 Lähde: https://www.incibe.es/en/incibe-cert/early-warning/vulnerabilities/cve-2004-2687
 
+
+
+
+## f) Metasploitable2 koneelle tunkeutuminen
+Yritän tunkeuta koneelle `portin 21` kautta käyttämällä (CVE-2011-2523) haavoitusta. Tulos:
+
+<img width="666" height="405" alt="image" src="https://github.com/user-attachments/assets/5d07e626-f704-426b-a459-2b45ff713264" />
+
+* Takaportin aktivointi: Otin `netcat`-työkalulla yhteyden maalikoneen FTP-porttiin 21 (`nc 192.168.56.102 21`). Syötin käyttäjätunnukseksi `USER test:)` ja salasanaksi `PASS pass`. Tunnuksen lopussa oleva hymiö `:)` muutaman syntaksivirheen jälkeen aukesi takaportti `vsftpd 2.3.4` versiolle.
+* Yhteyden ottaminen takaoveen: Avaamalla takaoven kohdejärjestelmä alkoi kuunnella porttia 6200. Otin toisessa terminaalissa yhteyden tähän porttiin komennolla `nc 192.168.56.102 6200`.
+* Pääsyn varmistaminen: Testasin komentoriviyhteyttä komennolla `whoami`, johon maalikone vastasi `root`.
+
+Yhteenveto:
+* Hyökkäys onnistui ja maalikoneeseen saatiin muodostettua suora yhteys.
+* Järjestelmästä saavutettiin root-tason oikeudet ilman toimivaa salasanaa.
+
+Lähde: https://nvd.nist.gov/vuln/detail/cve-2011-2523
+
+
+## g) Metasploit hyökkäysohjelman kokeilu
+
+
 ## Lähteet: 
 x)
 
@@ -390,6 +412,12 @@ NVD (National Vulnerability Database): CVE-2011-2523 - vsftpd 2.3.4 Backdoor exe
 CVE Program: CVE-2010-2075 - UnrealIRCd 3.2.8.1 Backdoor Command Execution. Saatavilla: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2075
 
 INCIBE-CERT / VulnDB: CVE-2004-2687 - distcc Arbitrary Command Execution. Saatavilla: https://www.incibe.es/en/incibe-cert/early-warning/vulnerabilities/cve-2004-2687
+
+
+f)
+https://nvd.nist.gov/vuln/detail/cve-2011-2523
+
+g) 
 
 
 
