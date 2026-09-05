@@ -389,6 +389,31 @@ https://docs.metasploit.com/docs/using-metasploit/intermediate/metasploit-databa
 
 ## d) Metasploitablen vsftpd-palveluun murtautuminen
 
+<img width="966" height="202" alt="image" src="https://github.com/user-attachments/assets/fff89a1b-eead-4038-a0b8-6ee9be4d3966" />
 
+Tiedetään, että kohdekoneessa (metasploitable `192.168.52.102`) pyörii vsftpd palvelu versio 2.3.4 portissa 21. Tämä versio tunnetaan siitä, että siihen päätyi vuonna 2011 haitallinen takaovi, joka avaa pääkäyttäjän (root) komentotulkin porttiin 6200, kun käyttäjätunnuksen perään syötetään hymiö :).
+
+
+
+
+<img width="1662" height="242" alt="image" src="https://github.com/user-attachments/assets/535c2f8f-43cb-43c7-9e6b-eb6f878256e2" />
+
+### Hyökkäyksen suoritus Metasploitilla
+Valitsin hyökkäysmoduuli `exploit/unix/ftp/vsftpd_234_backdoor` ja määritettiin hyökkäysmoduulin tarvittavat `RHOSTS` ja `LHOST` muuttujat:
+* `RHOSTS` (`192.168.56.102`) Kohdekoneen Metasploitable2 IP-osoite
+* `LHOST` (`192.168.56.101`) Kali hyökkäyskoneen IP-osoite, osoite tarvitaan paluuyhteyttä varten.
+  
+Hyökkäyksen suoritus laukaisi takaoven kohteessa ja avasi Meterpreter-session (`Meterpreter session 1 opened`)
+
+
+### Saatujen tietojen analysointi
+Meterpreter-sessiossa ajoin komennot `sysinfo` ja `getuid`.
+
+<img width="439" height="144" alt="image" src="https://github.com/user-attachments/assets/34aa5fc9-88f6-4610-87b4-249613c8570c" />
+
+Merkitys ja analyysi:
+* Käyttäjäoikeudet (`Server username: root`): Hyökkäys tuotti välittömästi root oikeudet tämä on kätevä, koska ei pidä erikseen suorittaa komentoa jolla hyökkääjä korottaa oikeuksiaan root tasolle vaan järjestelmä on täysin hallittavissa jo tässä vaiheessa.
+* Käyttöjärjestelmä (`Ubuntu 8.04 / Linux 2.6.24-16-server`): Kohteella on käytössä vanha Ubuntu versio julkaistu 2008 luvulla, tämä selittää miksi koneella on suuri hyökkäyspinta.
+* Koska hyökkääjällä on `root` oikeudet, järjestelmästä voidaan esimerkiksi kerätä kaikkien käyttäjien tiedot, asentaa pysyviä takaovia tai liikkua toisiin verkossa oleviin laitteisiin. 
 
 
