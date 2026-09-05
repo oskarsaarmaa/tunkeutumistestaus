@@ -502,15 +502,37 @@ Käytin jonkin verran apuani CYB3RLEO:n raporttia: https://github.com/CYB3RLEO/P
 ### Järjestelmä -ja prosessitiedot (`sysinfo` ja `ps`)
 <img width="438" height="127" alt="image" src="https://github.com/user-attachments/assets/3a22ad4c-5beb-4ab3-b41f-1764b910e939" />
 
-Komento `sysinfo` antaa välittömän yhteenvedon käyttöjärjestelmästä ja arkkitehtuurista.
+* Komento `sysinfo` antaa välittömän yhteenvedon käyttöjärjestelmästä ja arkkitehtuurista.
 
 <img width="564" height="784" alt="image" src="https://github.com/user-attachments/assets/7d11295a-2543-4f4e-b536-37c8b02019da" />
 
 
-`ps` komento listaa kaikki käynnissä olevat prosessit, niiden prosessi-ID:t (PID) sekä niitä ajavat käyttäjät.
+* `ps` komento listaa kaikki käynnissä olevat prosessit, niiden prosessi-ID:t (PID) sekä niitä ajavat käyttäjät.
 
 
-### Tiedostojärjestelmän interaktiivinen hallinta (`download` ja `upload`)
+
+### Verkkoympäristön kartoitus (`ifconfig`)
+
+<img width="406" height="391" alt="image" src="https://github.com/user-attachments/assets/2bf55cd8-8809-47d2-90d0-fa5349142d1c" />
+
+* Näyttää kohdekoneen kaikkien verkkokorttien tiedot.
+
+### Shell
+
+<img width="217" height="71" alt="image" src="https://github.com/user-attachments/assets/c023a8f8-c267-41ff-a3d9-ce3237269068" />
+
+* Jos Meterpreterin omat komennot eivät riitä, `shell` komento avaa suoran yhteyskanavan kohdejärjestelmän omaan Linux-komentotulkkiin, jonka avulla voidaan ajaa mitä tahansa komentoja tai skriptejä.
+
+Lähteet:
+
+About the Metasploit Meterpreter - Offsec: https://www.offsec.com/metasploit-unleashed/about-meterpreter/
+
+Metasploit Documentation: `man` sivut
+
+## h)
+
+
+
 
 
 
