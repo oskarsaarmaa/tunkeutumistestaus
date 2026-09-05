@@ -529,7 +529,44 @@ About the Metasploit Meterpreter - Offsec: https://www.offsec.com/metasploit-unl
 
 Metasploit Documentation: `man` sivut
 
-## h)
+## h) shell-session tallennus script työkalulla
+
+### Lokituksen käynnistäminen
+
+<img width="394" height="62" alt="image" src="https://github.com/user-attachments/assets/60cf4ba6-cc1d-4edd-b701-7c87af82f81b" />
+
+
+* Liput: `-f` kirjoittaa komennot tiedostoon reaaliajassa ja `-a` lisää tiedot tiedoston perään.
+
+
+### Hyökkäys Metasploit:lla 
+Käynnistin Metasploitin `msfconsole` komennolla ja käytin aikasemminkin käyttämäni vsftpd haavoittuvuutta:
+
+
+
+<img width="1662" height="242" alt="image" src="https://github.com/user-attachments/assets/7f500e5f-e450-4502-90dc-d8df30d63b6a" />
+
+
+<img width="439" height="144" alt="image" src="https://github.com/user-attachments/assets/454aa5ab-06a1-43c1-ab57-674caf58866b" />
+
+
+### Lokien tarkistaminen
+Lokien sisältö (cat logo001.txt):
+
+<img width="723" height="690" alt="image" src="https://github.com/user-attachments/assets/cbf2ecee-aabc-478a-a1d9-fc4ee742aea4" />
+
+* Tekstitiedostosta löytyy msfconsole:ssa suorittamani komennot ja ajat millon suoritin ne.
+
+Lähteet:
+
+
+## j) Pivot point
+
+
+
+
+
+
 
 
 
