@@ -437,5 +437,4 @@ Kohde laitteen/verkon tiedon keryy tavoitteena on selvittää verkkoympäristö,
 
 ### Aktiiviset verkkoyhteydet (`netstat`)
 
-
-
+*
