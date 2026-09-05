@@ -414,6 +414,28 @@ Meterpreter-sessiossa ajoin komennot `sysinfo` ja `getuid`.
 Merkitys ja analyysi:
 * Käyttäjäoikeudet (`Server username: root`): Hyökkäys tuotti välittömästi root oikeudet tämä on kätevä, koska ei pidä erikseen suorittaa komentoa jolla hyökkääjä korottaa oikeuksiaan root tasolle vaan järjestelmä on täysin hallittavissa jo tässä vaiheessa.
 * Käyttöjärjestelmä (`Ubuntu 8.04 / Linux 2.6.24-16-server`): Kohteella on käytössä vanha Ubuntu versio julkaistu 2008 luvulla, tämä selittää miksi koneella on suuri hyökkäyspinta.
-* Koska hyökkääjällä on `root` oikeudet, järjestelmästä voidaan esimerkiksi kerätä kaikkien käyttäjien tiedot, asentaa pysyviä takaovia tai liikkua toisiin verkossa oleviin laitteisiin. 
+* Koska hyökkääjällä on `root` oikeudet, järjestelmästä voidaan esimerkiksi kerätä kaikkien käyttäjien tiedot, asentaa pysyviä takaovia tai liikkua toisiin verkossa oleviin laitteisiin.
+
+Lähde: 
+
+CVE-2011-2523 Detail (vsFTPd v2.3.4 Backdoor): https://nvd.nist.gov/vuln/detail/cve-2011-2523
+
+VSFTPD v2.3.4 Backdoor Command Execution: https://www.rapid7.com/db/modules/exploit/unix/ftp/vsftpd_234_backdoor
+
+
+## e) Lateral movement Metasploit:ssa ja tieotojen analysointi
+
+Kohde laitteen/verkon tiedon keryy tavoitteena on selvittää verkkoympäristö, aktiiviset yhteydet, tallennetut tunnistetiedot sekä muut järjestelmässä vierailevat käyttäjät.
+
+### Verkkoympäristön ja aliverkkojen kartoitus (`ifconfig` ja `arp`)
+<img width="392" height="385" alt="image" src="https://github.com/user-attachments/assets/a55541aa-e3e9-4838-890a-862e3540e233" />
+
+<img width="414" height="159" alt="image" src="https://github.com/user-attachments/assets/e5993f18-7ede-45ee-bcf4-ad23d3479e89" />
+
+* Kohdekoneen verkkokorttien IP-osoitteet, aliverkon peitteet sekä ARP-taulukko, johon on tallentunut muiden samassa verkkosegmentissä viestineiden laitteiden MAC- ja IP-osoitteet.
+* ARP-taulukko paljastaa aktiiviset naapurikoneet ilman, että verkkoon tarvitsee ajaa mahdollisesti äänekästä nmap skannausta.
+
+### Aktiiviset verkkoyhteydet (`netstat`)
+
 
 
