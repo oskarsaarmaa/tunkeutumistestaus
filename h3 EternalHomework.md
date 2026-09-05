@@ -558,7 +558,12 @@ Lokien sisältö (cat logo001.txt):
 * Tekstitiedostosta löytyy msfconsole:ssa suorittamani komennot ja ajat millon suoritin ne.
 
 Lähteet:
+Komentorivin lokitus: Linux Programmer's Manual:
+https://man7.org/linux/man-pages/man1/script.1.html
 
+Meterpreter-komennot: OffSec Metasploit Unleashed Meterpreter Basics:
+
+https://www.offsec.com/metasploit-unleashed/meterpreter-basics
 
 ## j) Pivot point
 
