@@ -437,4 +437,22 @@ Kohde laitteen/verkon tiedon keryy tavoitteena on selvittää verkkoympäristö,
 
 ### Aktiiviset verkkoyhteydet (`netstat`)
 
-*
+<img width="796" height="1032" alt="netstat" src="https://github.com/user-attachments/assets/785d57e0-d3d5-4092-8d7f-4ab6b43ac039" />
+
+* Kaikki kohdekoneen avaamat ja kuuntelemat TCP/UDP-yhteydet, kuuntelevat portit sekä vastapuolen IP-osoitteet.
+
+
+### Tunnistetietojen kerääminen (`/etc/shadow`)
+
+<img width="559" height="589" alt="hashdump" src="https://github.com/user-attachments/assets/421fd5da-ee1b-43a8-9e8e-a1152ed93955" />
+
+ 
+* Komennon `cat /etc/shadow` suorittaminen tuottaa kaikkien jätjestelmän käyttäjien salasanat `hash` muodossa.
+  * `shadow` tiedosto onm paikka johon tallennetaan käyttäjien salasana hashit, tiedoston lukuoikeus on pelkästään `root` käyttäjällä.
+* Salasanamurto hashit voidaan kopioida Kali koneelle ja murtaa esimerkiksi Hashcat tai John the Ripper työkaluilla.
+* Tunnusten uudelleenkäyttö ihmiset usein käyttävät samoja salasanoja eri paikoissa salasanojen uudelleenkäyttö voi avata ovia.
+
+Lähteet:
+MITRE ATT&CK Framework: Tactic TA0008 - Lateral Movement: https://attack.mitre.org/tactics/TA0008/
+
+## f)
