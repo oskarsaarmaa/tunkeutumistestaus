@@ -455,4 +455,64 @@ Kohde laitteen/verkon tiedon keryy tavoitteena on selvittää verkkoympäristö,
 Lähteet:
 MITRE ATT&CK Framework: Tactic TA0008 - Lateral Movement: https://attack.mitre.org/tactics/TA0008/
 
-## f)
+## f) Metasploitabe2 koneelle tunkeutuminen tosisella tavalla
+Hyökkään metasploitable2 koneelle Samba-palvelun (portti 139/445) "usermap script" -haavoittuvuuden (CVE-2007-2447) avulla.
+
+
+### Kohteen skannaus Nmapilla
+
+<img width="991" height="656" alt="image" src="https://github.com/user-attachments/assets/7f13f04a-bd82-4476-b4ea-bdefe66a8c3a" />
+
+
+Nmap skannista näkyy, että Samba-tiedostojonopalvelu pyörii porteilla 139 ja 445. Kohdekoneella Samba pyörii versiolla 3.0.20, tämä on tärkeää tietoa jonka avula voidaan löytää Metasploitissa sopiva hyökkäysmoduuli. 
+
+
+### Haavoittuvuuden haku Metasploitissa 
+Avaan MSFconsole:n ja etsin tunnistetulle Samba 3.0.20 versiolle sopivaa hyökkäysmoduulia:
+
+<img width="1001" height="191" alt="image" src="https://github.com/user-attachments/assets/3047a700-7319-4412-89db-f06621def55b" />
+
+Hakutuloksiin ilmestyy moduuli `exploit/multi/samba/usermap_script`, joka mahdollistaa koodin suorituksen (`Command Execution`) Samban syötteenkäsiteltävyysvirheen kautta.
+
+### Hyökkäyksen suoritus
+Valitsen moduulin käyttöön ja asetetaan kohteeksi Metasploitable 2 sekä hyökkääjäksi Kali Linux:
+
+<img width="933" height="243" alt="image" src="https://github.com/user-attachments/assets/2c07c94c-af0a-411e-99b8-d1edbac540c9" />
+
+* `whoami` ja `id` komentojem vastaukseiksi saadaan `root` ja `uid=0(root)`, tämä vahvistaa murtautumisen onnistuneeksi!
+
+
+### Yhteenveto
+
+Hyökkäyksen suorittaminen laukaisi käänteisen shell-yhteyden (`cmd/unix/reverse_netcat`) kohdekoneelta takaisin Kali Linux -hyökkäyskoneelle. Yhteyden avauduttua saavutettu käyttöoikeustaso varmistettiin ajamalla järjestelmäkomennot `whoami` ja `id`:
+* Käänteinen shell-yhteys (`reverse shell`): Hyökkäystapa, jossa kohdekone pakotetaan ottamaan itse yhteys ulospäin hyökkääjän koneelle.
+* Samba-palvelu pyörii kohdejärjestelmässä taustalla `root` oikeuksin. Koska syötteenpuhdistuksen puute (ohjelmointivirhe 3.0.20 versiossa) mahdollisti komento-injektion suoraan Samban prosessiin, hyökkääjä saavutti välittömästi järjestelmän korkeimman hallintatason ilman tarvetta erilliselle oikeuksien korottamiselle
+
+Lähteet:
+
+NIST National Vulnerability Database: CVE-2007-2447 Detail: https://nvd.nist.gov/vuln/detail/CVE-2007-2447
+
+apid7 Vulnerability Database: Samba "username map script" Command Execution: https://www.rapid7.com/db/modules/exploit/multi/samba/usermap_script/
+
+Käytin jonkin verran apuani CYB3RLEO:n raporttia: https://github.com/CYB3RLEO/Penenetration_Testing_Lab_Exploitation_Phase3-Metasploitable3-samba_user_map-
+
+
+## g) Meterpretrin ominaisuudet
+
+### Järjestelmä -ja prosessitiedot (`sysinfo` ja `ps`)
+<img width="438" height="127" alt="image" src="https://github.com/user-attachments/assets/3a22ad4c-5beb-4ab3-b41f-1764b910e939" />
+
+Komento `sysinfo` antaa välittömän yhteenvedon käyttöjärjestelmästä ja arkkitehtuurista.
+
+<img width="564" height="784" alt="image" src="https://github.com/user-attachments/assets/7d11295a-2543-4f4e-b536-37c8b02019da" />
+
+
+`ps` komento listaa kaikki käynnissä olevat prosessit, niiden prosessi-ID:t (PID) sekä niitä ajavat käyttäjät.
+
+
+### Tiedostojärjestelmän interaktiivinen hallinta (`download` ja `upload`)
+
+
+
+
+
