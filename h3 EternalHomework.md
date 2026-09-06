@@ -16,8 +16,9 @@ Luvun 1 loppuosa käsittelee järjestelmällistä lähestymistapaa tunkeutumiste
 * Kun laitteet ja niiden ohjelmistoversiot on selvitetty, valitaan juuri oikea murtautumistyökalu (exploit) ja komentokanava (payload). Näin vältetään turhat virheet ja estetään kohdejärjestelmän kaatuminen.
 * Kun murto onnistuu, Meterpreter avaa tehokkaan hallintakanavan suoraan tietokoneen keskusmuistiin ilman, että kovalevylle tarvitsee tallentaa tiedostoja. Sen avulla on helppo kerätä tietoa laitteesta ja liikkua eteenpäin muihin samassa verkossa oleviin koneisiin (pivoting).
 
-Lähde: Mastering Metasploit - Fourth Edition: https://www.oreilly.com/library/view/mastering-metasploit/9781838980078/B15076_01_Final_ASB_ePub.xhtml#_idParaDest-31
-
+Lähteet: 
+Mastering Metasploit - Fourth Edition: https://www.oreilly.com/library/view/mastering-metasploit/9781838980078/B15076_01_Final_ASB_ePub.xhtml#_idParaDest-31
+Kurssimaterjaalit: https://terokarvinen.com/tunkeutumistestaus/
 
 ### Mitä `nmap -sn` tekee 
 Komento `nmap -sn` (No port scan) suorittaa ping-skannauksen (Host Discovery). Se määrittää, mitkä osoitteet ovat pystyssä (alive), ilman porttiskannausta.
@@ -657,5 +658,14 @@ https://attack.mitre.org/techniques/T1210/
 MITRE ATT&CK Technique T1003.008 (/etc/passwd and /etc/shadow):
 https://attack.mitre.org/techniques/T1003/008/
 
+
+
+Laatikoiden tekemiseen käytin apuna GitHub Docs resurssia - Organizing information with tables:
+
+https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables
+
+
+Kurssimaterjaalit: 
+https://terokarvinen.com/tunkeutumistestaus/
 
 
