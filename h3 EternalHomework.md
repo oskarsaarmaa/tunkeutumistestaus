@@ -567,16 +567,72 @@ https://www.offsec.com/metasploit-unleashed/meterpreter-basics
 
 ## j) Pivot point
 
+Mikä on kohdejärjestelmän verkkokortin MAC-osoite, ja mitä hyökkäysmoduulia kohdekoneen vsFTPd-palvelinta vastaan käytettiin? Mac osoite on hyödyllinen sillä voitaisi määrittää kohdejärjestelmän laitevalmistaja.
+
+### Skannaustietojoen siirto samaan kansioon ja hakukomento `grep` 
+
+Siirsin nmap skannauksien tulokset samaan kansioon `nmap.results`:
+
+<img width="574" height="61" alt="image" src="https://github.com/user-attachments/assets/7a78035a-5064-425d-9ba9-f768d84b325d" />
 
 
+Suoritin komennon `grep -r -i -E "vsftpd|mac address"`:
+
+<img width="668" height="179" alt="image" src="https://github.com/user-attachments/assets/1e40969a-aded-4255-b92f-cad55fea1a6d" />
+
+### Komennon liput ja syntaksi
+* `-r` (recrusive): Etsii hakusanaa rekursiivisesti kaikista nykyisen kansion tiedostoista sekä sen mahdollisista alikansioista. 
+* `-i` (ignore-case): Tekee hausta kirjainkoosta riippumattoman, eli haku löytää sekä `VSFTPD`, `vsftpd` sekä `Mac Address` muodot
+* `-E` (extended regex): Ottaa käyttöön laajennetut säännölliset lausekkeet. Tämä mahdollistaa pystyviivan | käyttämisen komennossa `"vsftpd|mac address"`.
+* `"vsftpd|mac address"`: Etsii rivejä, joilla esiintyy joko sana `vsftpd` tai `mac address`. 
+
+Lähteet:
+
+Linux man sivut `grep`:
+
+https://man7.org/linux/man-pages/man1/grep.1.html
+
+Nmap Network Scanning Documentation: Saving Nmap Output Files (-oA):
+
+https://nmap.org/book/man-briefoptions.html
 
 
+## k) MITRE ATT&CK -taktiikat ja -tekniikat
+
+Harjoituksessa suoritetut tunkeutumistestauksen vaiheet jakautuvat neljään keskeiseen MITRE ATT&CK -taktiikkaan:
+| Taktiikka (Tactic) | Tekniikka (Technique) | ID | Kuvaus harjoituksessa |
+| :--- | :--- | :--- | :--- |
+| Reconnaissance | Active Scanning: IP Addresses & Scanning IP Blocks | `T1595.001` / `T1595.002` | Portti- ja palveluskannaukset kohdeverkkoon Nmap-työkalulla (`nmap -oA`). |
+| Initial Access | Exploitation of Remote Services | `T1210` | Pääsyn saavuttaminen hyödyntämällä vsFTPd 2.3.4 -takaovea sekä Samba CVE-2007-2447 -haavoittuvuutta Metasploitilla. |
+| Execution | Command and Scripting Interpreter: Unix Shell | `T1059.004` | Komentojen suorittaminen kohteessa avatun interaktiivisen Unix/Linux-shellin ja Meterpreter-session kautta. |
+| Credential Access | OS Credential Dumping: `/etc/passwd` and `/etc/shadow` | `T1003.008` | Salasanarotointitietojen ja tiivisteiden (hash) tarkastelu lukemalla `/etc/shadow`-tiedostoa `root`-oikeuksin. |
 
 
+**Tiedustelu (Reconnaissance)** 
+* Avoimien porttien ja palvelujen haku (`T1595`): Kohdejärjestelmän aktiiviset palvelut, versiotiedot ja laitevalmistajan MAC-osoite selvitettiin aktiivisella verkkoskannauksella.
+
+**Alkupääsy (Initial Access)**
+* Etäpalvelujen haavoittuvuuksien hyödyntäminen (`T1210`): Kohteeseen murtauduttiin kahdella eri tavalla ilman käyttäjätunnuksia:
+  * FTP-palvelimen vsFTPd 2.3.4 -takaovi (portti 21).
+  * Samba-palvelun `usermap_script` haavoittuvuus (portti 139/445).
+
+**Komentojen suoritus (Execution)**
+* Komentotulkin käyttö (T1059.004): Onnistuneen hyökkäyksen jälkeen kohteeseen muodostettiin interaktiivinen Meterpreter-sessio.
+
+**Tunnisteiden kalastelu (Credential Access)**
+* Salasanatiivisteiden lukeminen (`T1003.008`): Suoraan `root` tason pääsyn ansiosta järjestelmästä voidaan suoraan lukea/kopioida `shadow` tiedosto johon salasana hashit on tallennettu.
 
 
+Lähteet:
 
+MITRE ATT&CK Enterprise Matrix:
+https://attack.mitre.org/
 
+MITRE ATT&CK Technique T1210 (Exploitation of Remote Services):
+https://attack.mitre.org/techniques/T1210/
+
+MITRE ATT&CK Technique T1003.008 (/etc/passwd and /etc/shadow):
+https://attack.mitre.org/techniques/T1003/008/
 
 
 
