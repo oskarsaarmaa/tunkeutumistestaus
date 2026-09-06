@@ -18,6 +18,8 @@ Luvun 1 loppuosa käsittelee järjestelmällistä lähestymistapaa tunkeutumiste
 
 Lähteet: 
 Mastering Metasploit - Fourth Edition: https://www.oreilly.com/library/view/mastering-metasploit/9781838980078/B15076_01_Final_ASB_ePub.xhtml#_idParaDest-31
+
+
 Kurssimaterjaalit: https://terokarvinen.com/tunkeutumistestaus/
 
 ### Mitä `nmap -sn` tekee 
