@@ -191,16 +191,39 @@ msf > db_nmap -sV -A 192.168.56.102
 
 ## b) Metasploitin tietokantoihin tallennettuja tietojen tarkastelu
 
+Kun Nmap-skannauksen tulokset tuodaan Metasploitin tietokantaan (`db_import`) tulokset tallentuvat MSF-tietokantaan, tietokannan sisälöä voidaan analysoida ja suodattaa tehokkaasti ilman uusia mahdollisesti äänekkäitä verkkoskannauksia.
+### `hosts`:
+
 <img width="785" height="143" alt="image" src="https://github.com/user-attachments/assets/395337c9-dcd8-4581-a159-3546c136c703" />
 
+* `hosts` Listaa kaikki tietokantaan tallennetut kohdekoneet, niiden IP- ja MAC-osoitteet sekä tunnistetun käyttöjärjestelmän.
 
+### `services -p (porttinumero/--up)`:
 <img width="790" height="128" alt="image" src="https://github.com/user-attachments/assets/a94b0cef-b7b3-40a0-a249-47ca2f36e50f" />
 
+* `services -p 80` Suodattaa esiin portilla x (80) pyörivät palvelut.
 
 <img width="942" height="471" alt="image" src="https://github.com/user-attachments/assets/bf6ad132-426b-4af8-b5bd-17e8f9dede65" />
 
-
+* `services --up` Listaa kaikki aktiiviset ja avoimessa tilassa olevat palvelut.
+  
+### `sevices -S vsftpd`:
 <img width="609" height="121" alt="image" src="https://github.com/user-attachments/assets/5080773f-f862-4297-9550-98c7e3862a97" />
+
+* `services -S vsftpd` Etsii tietokannasta hakusanalla `vsftpd` palvelua ja sen versiota (löytyi portti 21 / `vsftpd 2.3.4`).
+
+### Yhteenveto havaituista keskeisistä palveluista
+
+| Isäntä (Host) | MAC-osoite | Käyttöjärjestelmä | Portti | Palvelu (Name) | Versiotiedot (Info) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `192.168.56.102` | `08:00:27:67:e3:a5` | Linux 2.6.X (server) | 21/tcp | ftp | vsftpd 2.3.4 |
+| `192.168.56.102` | `08:00:27:67:e3:a5` | Linux 2.6.X (server) | 22/tcp | ssh | OpenSSH 4.7p1 Debian |
+| `192.168.56.102` | `08:00:27:67:e3:a5` | Linux 2.6.X (server) | 80/tcp | http | Apache httpd 2.2.8 (Ubuntu) DAV/2 |
+| `192.168.56.102` | `08:00:27:67:e3:a5` | Linux 2.6.X (server) | 139 & 445/tcp | netbios-ssn | Samba smbd 3.0.20-Debian |
+
+Lähteet:
+OffSec Metasploit Unleashed: Using the Metasploit Database:
+https://www.offsec.com/metasploit-unleashed/using-databases/
 
 
 
