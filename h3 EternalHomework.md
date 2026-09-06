@@ -39,7 +39,7 @@ Nmap Man-sivu (`nmap man`):
 
 
 
-## a)
+## a) Porttiskannauksen tuloket Metasploitin tietokantoihin
 <img width="778" height="222" alt="image" src="https://github.com/user-attachments/assets/6b763889-406a-481d-8e1b-251fc7ae764a" />
 <img width="412" height="34" alt="image" src="https://github.com/user-attachments/assets/8f9701c0-f86b-4a23-a17b-5d02cef213fd" />
 
@@ -189,7 +189,7 @@ msf > db_nmap -sV -A 192.168.56.102
  ```
 </details>
 
-## b)
+## b) Metasploitin tietokantoihin tallennettuja tietojen tarkastelu
 
 <img width="785" height="143" alt="image" src="https://github.com/user-attachments/assets/395337c9-dcd8-4581-a159-3546c136c703" />
 
@@ -204,7 +204,7 @@ msf > db_nmap -sV -A 192.168.56.102
 
 
 
-## c)
+## c) Internet famous
 
 Metasploitable 2 sisältää UnrealIRCD 3.2.8.1 Backdoor -haavoittuvuuden (CVE-2010-2075). Tämä takaovi päätyi viralliseen latauspakettiin vuonna 2009-2010, kun hyökkääjä murtautui UnrealIRCd:n peilipalvelimelle ja korvasi lähdekooditiedoston haitallisella versiolla. 
 Tapaus sai laajaa huomiota tietoturvamedioissa, sillä se osoitti ohjelmistotuotantoketjun (Supply Chain Attack) haavoittuvuuden.
