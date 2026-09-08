@@ -629,8 +629,8 @@ Harjoituksessa suoritetut tunkeutumistestauksen vaiheet jakautuvat neljään kes
 | Taktiikka (Tactic) | Tekniikka (Technique) | ID | Kuvaus harjoituksessa |
 | :--- | :--- | :--- | :--- |
 | Reconnaissance | Active Scanning: IP Addresses & Scanning IP Blocks | `T1595.001` / `T1595.002` | Portti- ja palveluskannaukset kohdeverkkoon Nmap-työkalulla (`nmap -oA`). |
-| Initial Access | Exploitation of Remote Services | `T1210` | Pääsyn saavuttaminen hyödyntämällä vsFTPd 2.3.4 -takaovea sekä Samba CVE-2007-2447 -haavoittuvuutta Metasploitilla. |
-| Execution | Command and Scripting Interpreter: Unix Shell | `T1059.004` | Komentojen suorittaminen kohteessa avatun interaktiivisen Unix/Linux-shellin ja Meterpreter-session kautta. |
+| Initial Access | Exploitation of Remote Services | `T1210` | Pääsyn saavuttaminen hyödyntämällä vsFTPd 2.3.4 -takaovea sekä Samba CVE-2007-2447 haavoittuvuutta Metasploitilla. |
+| Execution | Command and Scripting Interpreter: Unix Shell | `T1059.004` | Komentojen suorittaminen kohteessa avatun interaktiivisen terminaalin ja Meterpreter session kautta. |
 | Credential Access | OS Credential Dumping: `/etc/passwd` and `/etc/shadow` | `T1003.008` | Salasanarotointitietojen ja tiivisteiden (hash) tarkastelu lukemalla `/etc/shadow`-tiedostoa `root`-oikeuksin. |
 
 
