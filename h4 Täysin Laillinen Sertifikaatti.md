@@ -205,10 +205,35 @@ Tehtävänannossa neuvotaan jättämään kommentti joka palauttaa `alert` funkt
 
 <img width="1121" height="308" alt="image" src="https://github.com/user-attachments/assets/0d3d668d-563c-424a-beaa-3f79993cc661" />
 
+### Selaimen kommenttilomake 
 
 Täytän kommenttikentän `<script>alert(1)</script>` funktiolla, täytän muut kentät Name: `Testaaja` Sähköposti: `test@test.com` Verkkosivu `https://example.com`
 
 <img width="794" height="628" alt="image" src="https://github.com/user-attachments/assets/8b40c25e-7479-457e-8caa-b14b525e0263" />
+
+### ZAP tulos (POST-pyyntö)
+
+<img width="1714" height="790" alt="image" src="https://github.com/user-attachments/assets/f4094adc-278a-40ee-b088-24b64c34cc72" />
+
+
+
+### ZAP (Response)
+
+
+<img width="1897" height="823" alt="image" src="https://github.com/user-attachments/assets/8f3b679e-c4f4-4098-878e-37a39779cbb5" />
+
+
+### Labra ratkaistu
+
+Kun sivun päivittää Popup ilmestyy uudelleen ilman, että tarvitsis uutta kommenttia jättää. Tämä todistaa haavoittuvuuden olevan tallennettu (Stored).
+
+<img width="1706" height="820" alt="image" src="https://github.com/user-attachments/assets/75e0a94e-96b8-4b2f-9faf-bdb5487a2766" />
+
+
+Labra meni sillä läpi:
+
+<img width="976" height="474" alt="image" src="https://github.com/user-attachments/assets/88b07fd4-2a3b-4a19-a68f-f2e43ccbbb83" />
+
 
 
 
