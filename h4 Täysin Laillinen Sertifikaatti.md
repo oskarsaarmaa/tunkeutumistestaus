@@ -105,4 +105,20 @@ Liikenteen varmentaminen ja kaappaus: Käynnistettiin paikallinen HTTP-palvelin 
 
  <img width="1899" height="881" alt="image" src="https://github.com/user-attachments/assets/bd98f61d-17e4-40fe-a44b-6a97718f810c" />
 
- 
+
+## b) Kettumaista
+
+### FoxyProxy Standard asennus
+
+Asensin FoxyProxy Standard laajennuksen addons.mozilla.org:sta 
+
+<img width="840" height="445" alt="image" src="https://github.com/user-attachments/assets/05a0f361-1fff-43ce-abb5-fc0667dc0187" />
+
+
+Proxin lisääminen:
+
+<img width="951" height="469" alt="image" src="https://github.com/user-attachments/assets/d10132b3-bcd9-4e9b-834e-efd8cef5b0c3" />
+
+
+<img width="1907" height="884" alt="image" src="https://github.com/user-attachments/assets/1ff46b7f-2947-48c3-abd9-3e5e38171c4d" />
+
