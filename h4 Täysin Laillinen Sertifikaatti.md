@@ -52,6 +52,57 @@
 
  
 
+### Lähteet:
 
- ## a) Totally Legit Sertificate
+Vinkit ja tehtävä itsessään: https://terokarvinen.com/tunkeutumistestaus/
+
+
+ ## a) Totally Legit Certificate – OWASP ZAP & CA-Sertifikaatin Asennus
+
+ ### Tavoite
+
+ Asentaa OWASP ZAP Kali Linuxiin, generoida ZAP:n CA-sertifikaatti, tuoda se Firefox-selaimeen ja reitittää selaimen liikenne ZAP-proxyn läpi. Varmistetaan, että myös kuva-informaatio siepataan.
+
+Päivitettiin Kali Linuxin pakettilistat (`sudo apt-get update`) ja asennettiin ZAP-proxy (`sudo apt-get install -y zaproxy`).
+
+ <img width="849" height="562" alt="image" src="https://github.com/user-attachments/assets/8e221909-f858-43d7-924c-ca212dc8d7a0" />
+ 
+
+Sertifikaatin luonti ja vienti: Generoitiin OWASP ZAPissa uusi juurisertifikaatti (Dynamic SSL Certificate) ja tallennettiin se järjestelmään nimellä `zap_root_ca.cer`.
+
+
+<img width="1120" height="639" alt="image" src="https://github.com/user-attachments/assets/116e9019-cee6-4ed1-b139-b794973cd138" />
+
+ 
+ <img width="682" height="362" alt="image" src="https://github.com/user-attachments/assets/ee8f278a-852b-479b-a938-55640433634b" />
+
+
+
+CA-sertifikaatin luottamus: Tuotiin generoitu sertifikaatti Firefox-selaimen sertifikaattihallintaan (Authorities-välilehdelle) ja asetettiin selain luottamaan siihen verkkosivustojen tunnistamisessa.
+
+
+<img width="740" height="153" alt="image" src="https://github.com/user-attachments/assets/008fdcf7-cb54-453c-9a16-ebc8b57df680" />
+
+
+Valitaan luotu ZAP sertifikaatti
+
+<img width="771" height="312" alt="image" src="https://github.com/user-attachments/assets/5870e973-b82f-4456-8a96-db6cf52e6ace" />
+
+
+Näkyy Firefox sertifikaateissa
+
+<img width="672" height="462" alt="image" src="https://github.com/user-attachments/assets/e5b7d7a1-5c28-4a42-bc6f-655e1e66144d" />
+
+
+
+Näen asennetun kuvan `http://localhost:8000/testi.png`
+
+<img width="1216" height="775" alt="image" src="https://github.com/user-attachments/assets/90a1c3e3-ff7e-4cca-8180-cb1199bdf5da" />
+
+
+
+Liikenteen varmentaminen ja kaappaus: Käynnistettiin paikallinen HTTP-palvelin porttiin 8000 ja ohjattiin Firefoxin liikenne ZAP-proxyn läpi (portti 8080). Testikuvapyyntö (`http://localhost:8000/testi.png`) saatiin kaapattua onnistuneesti ZAPiin, mikä näkyy suoraan ZAPin Sites-puussa ja pyynnön otsaketiedoissa (Request).
+
+ <img width="1899" height="881" alt="image" src="https://github.com/user-attachments/assets/bd98f61d-17e4-40fe-a44b-6a97718f810c" />
+
  
