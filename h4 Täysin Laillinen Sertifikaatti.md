@@ -278,26 +278,24 @@ Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suoritt
 
 ### Kohteen paikallistaminen:
 * Vallitaan kuva ja kopioidan kuvan osioite.
-* Avaan kuvan toisessa välilehdessä, liikenteen ZAP suodattaa ja saan sen `Sites` näkymään.
-* `GET:image(filename)` sivua hiiren oikealla klikkaamalla ja valitsemalla `Open in request tab` päästään muokkaamaan osoiteriviä.
-* Korvaamalla osoiterivistä kuvan nimen `70.jpg` -> `filename=../../../../etc/passwd` päästään näkemään tiedoston sisällön (täytyy muuttaa `Response` ikkunasta `Body: Image -> Body: Text`, jotta pystyy lukea tiedoston sisällön.
 
-  
-kuvat valitaan kuva ja kopioidaan linkki:
 
 <img width="1223" height="554" alt="image" src="https://github.com/user-attachments/assets/547a9f9b-bb45-45bd-a274-85af9fb785fe" />
 
-
+* Avaan kuvan toisessa välilehdessä, liikenteen ZAP suodattaa ja saan sen `Sites` näkymään.
+    
 <img width="1345" height="728" alt="image" src="https://github.com/user-attachments/assets/1d12e8d6-ae72-4742-844a-eeabe03af210" />
 
 
-ZAP filename 70
+Tulos ZAP:ssa 
 
 <img width="1614" height="374" alt="image" src="https://github.com/user-attachments/assets/3a1d5ebf-385f-4229-afe9-de04b03036c9" />
 
 
-Ratkaisu
+* `GET:image(filename)` sivua hiiren oikealla klikkaamalla ja valitsemalla `Open in request tab` päästään muokkaamaan osoiteriviä.
 
 <img width="2666" height="795" alt="image" src="https://github.com/user-attachments/assets/f62a48e6-361b-4c3b-b564-dd34ccaf4854" />
+
+* Korvaamalla osoiterivistä kuvan nimen `70.jpg` -> `filename=../../../../etc/passwd` päästään näkemään tiedoston sisällön (täytyy muuttaa `Response` ikkunasta `Body: Image -> Body: Text`, jotta pystyy lukea tiedoston sisällön.
 
 
