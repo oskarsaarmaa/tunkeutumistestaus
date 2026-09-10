@@ -276,6 +276,13 @@ Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suoritt
 
 <img width="1113" height="315" alt="image" src="https://github.com/user-attachments/assets/700d2914-4fbd-4ffe-a30c-d61d8b38ebd0" />
 
+### Kohteen paikallistaminen:
+* Vallitaan kuva ja kopioidan kuvan osioite.
+* Avaan kuvan toisessa välilehdessä, liikenteen ZAP suodattaa ja saan sen `Sites` näkymään.
+* `GET:image(filename)` sivua hiiren oikealla klikkaamalla ja valitsemalla `Open in request tab` päästään muokkaamaan osoiteriviä.
+* Korvaamalla osoiterivistä kuvan nimen `70.jpg` -> `filename=../../../../etc/passwd` päästään näkemään tiedoston sisällön (täytyy muuttaa `Response` ikkunasta `Body: Image -> Body: Text`, jotta pystyy lukea tiedoston sisällön.
+
+  
 kuvat valitaan kuva ja kopioidaan linkki:
 
 <img width="1223" height="554" alt="image" src="https://github.com/user-attachments/assets/547a9f9b-bb45-45bd-a274-85af9fb785fe" />
