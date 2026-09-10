@@ -272,4 +272,25 @@ Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suoritt
 
 
 
+## f) Lab: File path traversal
+
+<img width="1113" height="315" alt="image" src="https://github.com/user-attachments/assets/700d2914-4fbd-4ffe-a30c-d61d8b38ebd0" />
+
+kuvat valitaan kuva ja kopioidaan linkki:
+
+<img width="1223" height="554" alt="image" src="https://github.com/user-attachments/assets/547a9f9b-bb45-45bd-a274-85af9fb785fe" />
+
+
+<img width="1345" height="728" alt="image" src="https://github.com/user-attachments/assets/1d12e8d6-ae72-4742-844a-eeabe03af210" />
+
+
+ZAP filename 70
+
+<img width="1614" height="374" alt="image" src="https://github.com/user-attachments/assets/3a1d5ebf-385f-4229-afe9-de04b03036c9" />
+
+
+Ratkaisu
+
+<img width="2666" height="795" alt="image" src="https://github.com/user-attachments/assets/f62a48e6-361b-4c3b-b564-dd34ccaf4854" />
+
 
