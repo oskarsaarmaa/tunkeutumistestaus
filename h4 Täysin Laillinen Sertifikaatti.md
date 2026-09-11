@@ -299,3 +299,99 @@ Tulos ZAP:ssa
 * Korvaamalla osoiterivistä kuvan nimen `70.jpg` -> `filename=../../../../etc/passwd` päästään näkemään tiedoston sisällön (täytyy muuttaa `Response` ikkunasta `Body: Image -> Body: Text`, jotta pystyy lukea tiedoston sisällön.
 
 
+## g) Lab: File path traversal traversal sequences blocked with absolute path bypass
+
+###  Kohteen paikallistaminen ja liikenteen kaappaus
+
+* Valitsin verkkokaupan sivulta tuotekuvan ja kopion sen osoiteen uuteen välilehteen.
+
+<img width="1160" height="708" alt="image" src="https://github.com/user-attachments/assets/e76a9dcf-b60e-4d36-9ed4-5b34fa487300" />
+
+Kuva uudessa välilehdessä:
+
+<img width="1431" height="738" alt="image" src="https://github.com/user-attachments/assets/8bee0e61-9044-473a-89ac-8c2b46be95aa" />
+
+
+* ZAP kaappaa pyynnön, josta nähdään sovelluksen hakevan kuvan parametrilla `image?filename=66.jpg`.
+
+<img width="2459" height="633" alt="image" src="https://github.com/user-attachments/assets/31d1ed07-26f7-40a9-84d8-ef4b20a11d66" />
+
+### Haavoittuvuuden analysointi ja kierto
+
+* Palvelin suodattaa suhteelliset polkumääreet (`../`), mutta syötettä ei ole rajoitettu pelkästään sallittuihin tiedostonimiin eikä absoluuttisia polkuja ole estetty.
+* Pyyntö avataan ZAPin Requester-työkaluun, jossa parametrin arvoksi muokataan suora absoluuttinen tiedostopolku: `filename=/etc/passwd`.
+
+<img width="2474" height="649" alt="image" src="https://github.com/user-attachments/assets/f63394bd-6996-4f66-9465-e4fba40860a1" />
+
+
+### Tuloksen varmistaminen
+
+* Lähetettäessä muokattu pyyntö palvelin palauttaa vastauksen (`Response`) ja ZAPin `Body: Text` näkymässä näkyy järjestelmän `/etc/passwd` tiedoston sisältö.
+
+## h) Lab: File path traversal, traversal sequences stripped non-recursively
+
+###  Kohteen paikallistaminen ja liikenteen kaappaus
+
+* Valitsin verkkokaupan sivulta tuotekuvan ja avatasin sen osoite toisessa välilehdessä, jolloin ZAP kaappaa pyynnön `image?filename=10.jpg`
+  
+<img width="1194" height="693" alt="image" src="https://github.com/user-attachments/assets/e2d8abb8-a91c-40b9-8d42-6ce1ad980a37" />
+
+Kuva uudessa välilehdessä:
+
+<img width="1444" height="761" alt="image" src="https://github.com/user-attachments/assets/6e629c31-5c88-447b-b892-03a05e1ae58d" />
+
+Liikenne ZAP:ssa 
+
+<img width="2460" height="600" alt="image" src="https://github.com/user-attachments/assets/27baa9ca-a4e2-4bdf-97fa-6fa30e34ce6b" />
+
+
+### Haavoittuvuuden analysointi ja kierto
+
+* Palvelin yrittää estää hyökkäykset poistamalla syötteestä ../-merkkijonot, mutta suodatus ei ole rekursiivinen (se ajetaan vain kerran).
+* Pyyntö avataan ZAPin Requester-työkaluun, jossa parametriksi muokataan sisäkkäinen rakenne: `filename=....//....//....//....//etc/passwd`.
+* Kun palvelin poistaa suodatuksessaan keskeltä ../-osan, jäljelle jäävät merkit muodostavat uuden `../` yhdistelmän.
+  
+
+<img width="2903" height="632" alt="image" src="https://github.com/user-attachments/assets/70d955b2-2f0c-4a3a-b3d3-cce7270db667" />
+
+### Tuloksen varmistaminen
+
+* Pyynnön lähettämisen jälkeen palvelin palauttaa vastauksessa (`Response`) `/etc/passwd` tiedoston sisällön, mikä vahvistetaan ZAPin `Body: Text` näkymässä.
+
+
+## i) Insecure Direct Object Reference (IDOR)
+
+### Haavoittuvuuden tunnistaminen
+
+Sovelluksen Live chat -toiminnosta ladattiin keskusteluhistoria (transcript), jolloin ZAPissa havaittiin latauspyynnön osoittavan suoraan tiedostotunnisteeseen: `GET /download-transcript/2.txt`.
+
+<img width="1157" height="547" alt="image" src="https://github.com/user-attachments/assets/761d8367-c63f-4001-a8a2-a1ae09321de1" />
+
+
+
+Painoin view transcript, joka latasi tiedoston missä lukee: `CONNECTED: -- Now chatting with Hal Pline --`:
+
+
+<img width="780" height="405" alt="image" src="https://github.com/user-attachments/assets/6ebae49e-43bd-4da1-84b0-4f5f4ca035b0" />
+
+
+Liikenne ZAP:ssa 
+
+<img width="2405" height="935" alt="image" src="https://github.com/user-attachments/assets/e618fb66-c9a7-44d1-a3d6-30807b5ecbb8" />
+
+
+### Käyttöoikeuksien puutteen hyödyntäminen (IDOR)
+* Sovellus ei tarkista, kuuluuko pyydetty tiedosto kirjautuneelle käyttäjälle.
+* Pyyntö avattiin ZAPin Requester-työkaluun ja parametria muokattiin vaihtamalla tiedostonumeroksi `1.txt`.
+  
+
+<img width="1981" height="505" alt="image" src="https://github.com/user-attachments/assets/8683eafa-26db-4826-b99d-73d69c8ddf8c" />
+
+### Tietojen urkinta ja sovellusmurtaminen
+
+* Palvelin palautti vastauksessa (`Response`) toisen käyttäjän chatti-lokin, joka sisälsi käyttäjän `carlos` salasanan.
+
+### Tuloksen varmistaminen
+
+* Saatua salasanaa käytettiin kirjautumiseen `carlos` käyttäjänä, mikä vahvisti haavoittuvuuden ja ratkaisi labran.
+
