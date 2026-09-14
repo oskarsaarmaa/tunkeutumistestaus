@@ -403,6 +403,14 @@ Kuva uudessa välilehdessä:
 
 * Lähetettäessä muokattu pyyntö palvelin palauttaa vastauksen (`Response`) ja ZAPin `Body: Text` näkymässä näkyy järjestelmän `/etc/passwd` tiedoston sisältö.
 
+
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+Tehtävä: Portswigger -  File path traversal, traversal sequences blocked with absolute path bypass: https://portswigger.net/web-security/file-path-traversal/lab-absolute-path-bypass
+
+
 ## h) Lab: File path traversal, traversal sequences stripped non-recursively
 
 ###  Kohteen paikallistaminen ja liikenteen kaappaus
@@ -476,9 +484,14 @@ Liikenne ZAP:ssa
 ### Tuloksen varmistaminen
 
 * Saatua salasanaa käytettiin kirjautumiseen `carlos` käyttäjänä, mikä vahvisti haavoittuvuuden ja ratkaisi labran.
-
-
+* Miksi haavoittuvuus syntyy?
+   * Sovellus luottaa suoraan käyttäjän lähettämään tiedosto-ID:hen (`1.txt`) eikä tarkista taustajärjestelmässä (backendissä), onko pyynnön tekevällä käyttäjällä oikeutta
+     
 
 ### Lähteet:
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+Tehtävä - Portswigger Insecure direct object references: https://portswigger.net/web-security/access-control/lab-insecure-direct-object-references
+
+OWASP Foundation: Access Control - Insecure Direct Object References (IDOR): https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_References_Prevention_Cheat_Sheet.html
