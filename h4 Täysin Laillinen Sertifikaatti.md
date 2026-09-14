@@ -56,6 +56,14 @@
 
 Vinkit ja tehtävä itsessään: https://terokarvinen.com/tunkeutumistestaus/
 
+Access Control: https://community.owasp.org/Broken_Access_Control
+
+Access Control IDOR: https://portswigger.net/web-security/access-control/idor
+
+File Path Traversal: https://portswigger.net/web-security/file-path-traversal
+
+Cross Site Scripting: https://portswigger.net/web-security/cross-site-scripting
+
 
  ## a) Totally Legit Certificate – OWASP ZAP & CA-Sertifikaatin Asennus
 
@@ -106,6 +114,11 @@ Liikenteen varmentaminen ja kaappaus: Käynnistettiin paikallinen HTTP-palvelin 
  <img width="1899" height="881" alt="image" src="https://github.com/user-attachments/assets/bd98f61d-17e4-40fe-a44b-6a97718f810c" />
 
 
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+
 ## b) Kettumaista
 
 ### FoxyProxy Standard asennus
@@ -150,6 +163,9 @@ FoxyProxy Pattern tilassa:
 
 
 
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
 ## C) PortSwigger Labs - Cross Site Scripting (XSS)
 
@@ -197,6 +213,9 @@ Payload: Hakukentän kautta syötettiin suoritettavaa JavaScript-koodia sisält�
 <img width="932" height="283" alt="image" src="https://github.com/user-attachments/assets/c39557b5-d551-412d-a93a-c3b7c09dd0c9" />
 
 
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
 ## d) Stored XSS into HTML context with nothing encoded
 
@@ -243,6 +262,11 @@ Labra meni sillä läpi:
 <img width="976" height="474" alt="image" src="https://github.com/user-attachments/assets/88b07fd4-2a3b-4a19-a68f-f2e43ccbbb83" />
 
 
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+
 ## e) Mitä hyökkääjä hyötyy XSS-hyökkäyksestä?
 
 Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suorittamisen uhrin selaimessa kyseisen sivuston kontekstissa. Tämä antaa hyökkääjälle laajat oikeudet toimia uhrin henkilöllisyydellä.
@@ -272,6 +296,11 @@ Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suoritt
 
 
 
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+
 ## f) Lab: File path traversal
 
 <img width="1113" height="315" alt="image" src="https://github.com/user-attachments/assets/700d2914-4fbd-4ffe-a30c-d61d8b38ebd0" />
@@ -299,6 +328,12 @@ Tulos ZAP:ssa
 * Korvaamalla osoiterivistä kuvan nimen `70.jpg` -> `filename=../../../../etc/passwd` päästään näkemään tiedoston sisällön (täytyy muuttaa `Response` ikkunasta `Body: Image -> Body: Text`, jotta pystyy lukea tiedoston sisällön.
 
 
+
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+
 ## g) Lab: File path traversal traversal sequences blocked with absolute path bypass
 
 ###  Kohteen paikallistaminen ja liikenteen kaappaus
@@ -322,6 +357,7 @@ Kuva uudessa välilehdessä:
 * Pyyntö avataan ZAPin Requester-työkaluun, jossa parametrin arvoksi muokataan suora absoluuttinen tiedostopolku: `filename=/etc/passwd`.
 
 <img width="2474" height="649" alt="image" src="https://github.com/user-attachments/assets/f63394bd-6996-4f66-9465-e4fba40860a1" />
+
 
 
 ### Tuloksen varmistaminen
@@ -357,6 +393,11 @@ Liikenne ZAP:ssa
 ### Tuloksen varmistaminen
 
 * Pyynnön lähettämisen jälkeen palvelin palauttaa vastauksessa (`Response`) `/etc/passwd` tiedoston sisällön, mikä vahvistetaan ZAPin `Body: Text` näkymässä.
+
+
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
 
 ## i) Insecure Direct Object Reference (IDOR)
@@ -395,3 +436,8 @@ Liikenne ZAP:ssa
 
 * Saatua salasanaa käytettiin kirjautumiseen `carlos` käyttäjänä, mikä vahvisti haavoittuvuuden ja ratkaisi labran.
 
+
+
+### Lähteet:
+
+Vinkit: https://terokarvinen.com/tunkeutumistestaus/
