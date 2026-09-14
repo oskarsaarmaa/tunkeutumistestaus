@@ -118,6 +118,12 @@ Liikenteen varmentaminen ja kaappaus: Käynnistettiin paikallinen HTTP-palvelin 
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
+OWASP ZAP User Guide – Local Proxies / Certificates: https://www.zaproxy.org/docs/desktop/addons/network/options/localservers/
+
+Mozilla Support – Setting Up Certificate Authorities in Firefox: https://support.mozilla.org/en-US/kb/setting-certificate-authorities-firefox
+
+OWASP ZAP Desktop User Guide – Getting Started: https://www.zaproxy.org/docs/desktop/start/
+
 
 ## b) Kettumaista
 
@@ -153,6 +159,7 @@ FoxyProxy Pattern tilassa:
 <img width="1890" height="760" alt="proxy" src="https://github.com/user-attachments/assets/0aebaea3-5c0a-4e6a-98cc-8f19d298485d" />
 
 
+Tila on tärkeä, koska se estää taustaliikenteen (kuten selaimen päivitysten tai muiden välilehtien) sotkemasta ZAPin historiaa, jolloin vain halutut kohteet (localhost, portswigger.net) menevät proxyn läpi.
 
 **Yhteys `http://localhost:8000`**
 
@@ -166,6 +173,11 @@ FoxyProxy Pattern tilassa:
 ### Lähteet:
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+FoxyProxy Standard Extension for Firefox: https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/
+
+FoxyProxy Documentation:  https://getfoxyproxy.org/docs/
+
 
 ## C) PortSwigger Labs - Cross Site Scripting (XSS)
 
@@ -217,6 +229,13 @@ Payload: Hakukentän kautta syötettiin suoritettavaa JavaScript-koodia sisält�
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
+
+Tehtävä - Portswigger Cross Site Scripting: https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded
+
+
+OWASP Foundation Cross Site Scripting (XSS) Prevention Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+
+
 ## d) Stored XSS into HTML context with nothing encoded
 
 
@@ -266,6 +285,11 @@ Labra meni sillä läpi:
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
+Tehtävä - Portswigger Stored XSS into HTML context with nothing encodedg: https://portswigger.net/web-security/cross-site-scripting/stored/lab-html-context-nothing-encoded
+
+
+OWASP Foundation - Stored Cross-Site Scripting: https://owasp.org/www-community/attacks/xss/#stored-xss-attacks
+
 
 ## e) Mitä hyökkääjä hyötyy XSS-hyökkäyksestä?
 
@@ -300,6 +324,14 @@ Cross-Site Scripting (XSS) mahdollistaa mielivaltaisen JavaScript-koodin suoritt
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
+OWASP Foundation - Excessive Trust in Client / XSS Impacts: https://owasp.org/www-community/attacks/xss/
+
+OWASP Foundation - DOM Based XSS: https://community.owasp.org/attacks/DOM_Based_XSS
+
+MDN Web Docs -  HttpOnly Cookies:  https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#restrict_access_to_cookies
+
+Keylogging - MitreAtt&ck Matrix: https://attack.mitre.org/techniques/T1056/001/
+
 
 ## f) Lab: File path traversal
 
@@ -326,6 +358,9 @@ Tulos ZAP:ssa
 <img width="2666" height="795" alt="image" src="https://github.com/user-attachments/assets/f62a48e6-361b-4c3b-b564-dd34ccaf4854" />
 
 * Korvaamalla osoiterivistä kuvan nimen `70.jpg` -> `filename=../../../../etc/passwd` päästään näkemään tiedoston sisällön (täytyy muuttaa `Response` ikkunasta `Body: Image -> Body: Text`, jotta pystyy lukea tiedoston sisällön.
+* Miksi `../../../` tarvitaan?
+    * `../` siirtää haun kuvahakemistosta kolme tasoa ylöspäin järjestelmän juureen, josta käsin päästään käsiksi kriittiseen `/etc/passwd` tiedostoon.
+* Haavoittuvuuden syy: Sovellus yhdistää käyttäjän antaman syötteen (`filename`) suoraan tiedostojärjestelmän polkuun ilman validointia.
 
 
 
@@ -333,6 +368,10 @@ Tulos ZAP:ssa
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
 
+Tehtävä - Portswigger File path traversal, simple case: https://portswigger.net/web-security/file-path-traversal/lab-simple
+
+OWASP Foundation - Path Traversal: https://owasp.org/www-community/attacks/Path_Traversal
+  
 
 ## g) Lab: File path traversal traversal sequences blocked with absolute path bypass
 
@@ -398,6 +437,8 @@ Liikenne ZAP:ssa
 ### Lähteet:
 
 Vinkit: https://terokarvinen.com/tunkeutumistestaus/
+
+Tehtävä - Portswigger: File path traversal: https://portswigger.net/web-security/file-path-traversal/lab-absolute-path-bypass
 
 
 ## i) Insecure Direct Object Reference (IDOR)
