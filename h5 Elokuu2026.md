@@ -382,3 +382,45 @@ openssl passwd -6 -salt "testisalt" kekskeksi > sha512_hash.txt
 
 ## e) Sanakirja
 
+Käytän `cewl`-työkalua, joka crawling-menetelmällä kerää verkkosivulta sanoja ja luo niistä kohdennetun sanakirjan (custom wordlist). Lisäksi yhdistetään se omaan testisanastoon.
+
+
+### Kohdennetun sanakirjan luonti `cewl`-työkalulla
+`cewl` pystyy kerätä sanoja verkkosivuilta, kuitenkin tämä ei ole luvattua niin luon oman testisivun jomka avulla kokeilen työkalua.
+
+<details>
+<summary>Testisivun luonti: </summary>
+
+<img width="1393" height="55" alt="image" src="https://github.com/user-attachments/assets/594461b7-c9c6-4ed5-99d6-6b85f8b4bd5f" />
+
+</details>
+
+* Loin HTML-esimerkkisivu (`testisivu.html`) ja tarjoiltiin se väliaikaisella Python-verkkopalvelimella (`python3 -m http.server 8000`) osoitteessa `localhost`. Tämä varmisti täysin luvallisen ja eettisen testausympäristön ilman kolmansien osapuolten verkkosivujen luvatonta haravointia.
+* Oman testisivun luonnilla varmistun siitä, etten riko tietoturvalakeja.
+ 
+<details>
+<summary>cewl -työkalun ajo paikallista python palvelinta vastaan: </summary>
+
+<img width="611" height="195" alt="image" src="https://github.com/user-attachments/assets/b58aa267-3e90-4957-9bea-389f1a886455" />
+
+</details>
+
+* Sanojen kerääminen `cewl`-työkalulla: `cewl`-työkalu paikallista HTTP-palvelinta vasten. Parametrilla `-m 4`, joka poimii sivulta kaikki vähintään 4 merkin pituiset sanat ja tallentaa ne mukautetuksi sanakirjaksi (`mukautettu_sanakirja.txt`).
+* Palvelimen loki vahvistaa hyökkäyksen onnistumisen tila koodilla `GET /testisivu.html HTTP/1.1 200`, mikä osoittaa `cewl`:n hakeneen sivun sisällön onnistuneesti.
+
+
+<details>
+<summary>Murto</summary>
+
+<img width="635" height="184" alt="image" src="https://github.com/user-attachments/assets/e1b06729-90b4-4915-a387-d669a3a0f34a" />
+
+
+</details>
+
+* Murtaminen kohdennetulla sanakirjalla: Ajoin John the Ripper käyttäen syötteenä kerättyä sanakirjaa (`--wordlist=mukautettu_sanakirja.txt`).
+* Jouduin käyttämään `john --show sha512_hash.txt`, koska `John The Ripper` on aiemmin jo murtanut tiivisteen ja tallentanut sen muistiinsa. Vaihtoehtoisesti olisin voinut poistaa tiedoston ja ajaa komennon uusiksi.
+
+
+## h) Hash rules
+
+
