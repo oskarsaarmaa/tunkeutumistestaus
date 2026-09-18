@@ -210,6 +210,14 @@ john --wordlist=test_words.txt zip_hash.txt
 </details>
 
 
+### Testitulos ja havainnot
+Kuten yllä olevasta tulosteesta näkyy, hyökkäys onnistui välittömästi:
+
+* Automaattinen tunnistus: John the Ripper tunnisti tiivistetiedostosta automaattisesti oikean algoritmin: `Loaded 1 password hash (PKZIP [32/64])`.
+* Salasanan murtaminen: Työkalu löysi oikean salasanan keltaisella korostettuna: `kekskeksi (salattu_arkisto.zip/salaisuus.txt)`.
+* Suoritus: Ajossa hyödynnettiin kahta säiettä (`Will run 2 OpenMP threads`) ja tila siirtyi tilaan `Session completed`.
+
+
 ### Käsitteet ja työkalujen toimintaperiaate (`zip2john`, `pdf2john`, `ssh2john`)
 
 * Mitä ne on: Erilliset apuskriptit ja työkalut, jotka lukevat salatun tiedoston rakenteen ja poimivat sieltä vain sen osan, joka tarvitaan salasanan tarkistamiseen (otsikkotiedot, suola ja laskettu tiiviste).
@@ -221,4 +229,156 @@ john --wordlist=test_words.txt zip_hash.txt
 
 * Miten se toimii: Toisin kuin Hashcat (jolle pitää antaa tietty `-m`-parametri, esim. `-m 0`), John the Ripper analysoi syötettävän tiivistetiedoston syntaksia ja tunnistetunnisteita (header/prefix).
 * Kun `zip2john` luo tiivisteen, se alkaa tunnisteella `$zip2$....` John tunnistaa tämän tunnisteen perusteella automaattisesti kyseessä olevan ZIP-arkiston PKZIP/WinZip-tiiviste ja valitsee oikean sisäisen murtosilmukan ilman käyttäjän erillistä komentoa.
+
+
+## c) Tiedosto
+
+Testataan salatun 7-Zip (.7z) -arkiston murtamista. Suoritan testin luomalla salatun 7z-tiedoston ja murtamalla sen `7z2john.pl`-skriptillä ja John the Ripperin avulla.
+
+### Testiympäristön valmistelu 
+
+Suoritan seuraavat komennot luodaakseni salatun `.7zip`-tiedoston:
+
+
+```bash
+# Luon esimerkkitiedoston
+echo "Super duper salaisia tietoja" > hanke.txt
+
+# Luon salatun 7z-arkisto salasanalla 'kekskeksi'
+7z a -p"kekskeksi" salattu_hanke.7z hanke.txt
+
+# Poimin tiivisteen 7z2john.pl -skriptillä
+/usr/share/john/7z2john.pl salattu_hanke.7z > 7z_hash.txt
+
+#  John the Ripper murtaa tiivisteen 
+john --wordlist=test_words.txt 7z_hash.txt
+
+```
+
+<details>
+<summary>Tiedostojen luonti: </summary>
+
+<img width="576" height="333" alt="image" src="https://github.com/user-attachments/assets/c34d9de1-6f94-4c3f-af7e-7f1511bed6dd" />
+
+<img width="919" height="76" alt="image" src="https://github.com/user-attachments/assets/08ed309a-1bf3-4d41-83c2-0224ad5e1672" />
+
+</details>
+
+
+<details>
+<summary>Salasanan murto: </summary>
+
+<img width="747" height="252" alt="image" src="https://github.com/user-attachments/assets/0f478f9e-9668-4eb6-ae61-10fb3e36367e" />
+
+
+</details>
+
+
+### Testitulos ja vertailu (ZIP vs 7z)
+
+Murto onnistui ja tuloksista voidaan tehdä seuraavat havainnot:
+* Automaattinen tunnistus: John the Ripper tunnisti algoritmin oikein: `Loaded 1 password hash (7z, 7-Zip archive encryption [SHA256 256/256 AVX2 8x AES])`.
+* Laskentateho ja iteraatiot: Tulosteessa rivi `Cost 1 (iteration count) is 524288` osoittaa, että 7-Zip kierrättää tiivistettä yli puoli miljoonaa kertaa salasanan tarkistamiseksi.
+* Nopeusero: Suuren iteraatiomäärän vuoksi murtonopeus oli vain 12.50 c/s (tiivistettä/s), kun aiemmalla ZIP-arkistolla se oli 133.3 c/s. Tämä osoittaa käytännössä, miksi 7z-rakenne suojaa brute-force-hyökkäyksiltä merkittävästi paremmin kuin vanhat arkistomuodot.
+
+
+## d) Linux-käyttäjän tiivisteen murtaminen (`/etc/shadow`)
+
+Testaan Linux-järjestelmän salasanatiivisteen murtamista. Luon väliaikaisen käyttäjän järjestelmään, poimin sen tiivisteen `/etc/shadow`-tiedostosta ja koitan murtaa sen Johon The Ripper-työkalulla.
+
+
+
+### Testiympäristön valmistelu 
+
+
+
+```bash
+# 1. Luon uuden käyttäjä nimeltä 'murtotesti'
+sudo useradd -m murtotesti
+
+# 2. Asetan käyttäjälle salasana (esim. 'kekskeksi')
+sudo passwd murtotesti
+
+# 3. poimin käyttäjän tiivisteen /etc/shadow -tiedostosta
+sudo grep 'murtotesti' /etc/shadow > shadow_hash.txt
+
+# 4. Tarkistan poimitun tiivisteen muodon 
+cat shadow_hash.txt
+
+```
+
+<details>
+<summary>Käyttäjän ja tiivisteen luonti: </summary>
+
+<img width="843" height="271" alt="image" src="https://github.com/user-attachments/assets/93a6fa9c-e0ec-4069-b7d7-d040375876a3" />
+
+</details>
+
+> Katsomalla tiivisteen alkua nähdään käytetty algoritmi: jos rivi alkaa `$y$`, kyseessä on Yescrypt
+
+
+### Tiivisteen siistiminen ja murtaminen
+
+Poistan tiedostosta käyttäjänimen ja muut kentät, jotta jäljelle jää vain pelkkä tiivistemerkkijono:
+
+
+```bash
+# Pelkkä tiiviste (toinen kentä kaksoispisteiden välissä)
+sudo cut -d':' -f2 shadow_hash.txt > shadow_only.txt
+
+# John Ajo ($y$, käytetään modea 18200):
+john --wordlist=test_words.txt shadow_hash.txt
+
+```
+
+<details>
+<summary>Siistetty tiiviste: </summary>
+
+<img width="860" height="183" alt="image" src="https://github.com/user-attachments/assets/87e88788-0030-462d-8a15-41e59910332a" />
+
+</details>
+
+
+<details>
+<summary>John 1. murto (epäonnistui): </summary>
+
+<img width="698" height="173" alt="image" src="https://github.com/user-attachments/assets/99d24d37-2a5c-4bd1-ad64-bbd168374df2" />
+
+
+</details>
+
+* Murto epäonnistui, koska John the Ripper tulkitsi shadow-rivin virheellisesti vanhaksi SHA-256 muodoksi ja John-versiossa jota käytin ei ollut kääntötukea ja ei tuottanut salasanaa. Kuitenkin tämä on veikkaus en ole ihan varma miksi murto ei onnistunut.
+* Murto meni läpi kun vaihdoin tiivisteen SHA-512 crypt -muotoon:
+  
+```bash
+openssl passwd -6 -salt "testisalt" kekskeksi > sha512_hash.txt
+
+```
+* `openssl passwd -6`: Asettaa tiivistealgoritmiksi Linuxin standardin SHA-512 crypt -muodon.
+* `-salt "testisalt"`: Määrittää tiivisteeseen lisättävän kiinteän suolan (salt), joka estää sateenkaaritaulukoiden hyödyntämisen.
+
+<details>
+<summary>SHA-512: </summary>
+
+<img width="551" height="49" alt="image" src="https://github.com/user-attachments/assets/9775da72-1b20-44c8-b3c3-e33dface8bfc" />
+
+</details>
+
+
+
+<details>
+<summary>John 2. murto (onnistui!): </summary>
+
+<img width="728" height="195" alt="image" src="https://github.com/user-attachments/assets/bcd03e39-8d51-446d-8e73-494f17a3ff3d" />
+
+</details>
+
+### Testitulos ja havainnot
+
+* Automaattinen tunnistus: John the Ripper tunnisti algoritmin välittömästi tunnisteen `$6$` perusteella: `Loaded 1 password hash (sha512crypt, crypt(3) $6$ [SHA512 256/256 AVX2 4x])`.
+* Murtotulos: Sanakirjahyökkäys täsmäsi välittömästi ja tiivisteestä paljastui selkokielinen salasana `kekskeksi`.
+* Luonnissa käytetty suola (`testisalt`) yhdistettiin salassapidettyyn sanaan ennen tiivistämistä. Tämä varmistaa sen, että vaikka kahdella eri käyttäjällä olisi sama salasana, `/etc/shadow`-tiedostossa olevat tiivisteet näyttävät täysin erilaisilta.
+
+
+## e) Sanakirja
 
