@@ -421,6 +421,32 @@ Käytän `cewl`-työkalua, joka crawling-menetelmällä kerää verkkosivulta sa
 * Jouduin käyttämään `john --show sha512_hash.txt`, koska `John The Ripper` on aiemmin jo murtanut tiivisteen ja tallentanut sen muistiinsa. Vaihtoehtoisesti olisin voinut poistaa tiedoston ja ajaa komennon uusiksi.
 
 
-## h) Hash rules
+## f) Hash rules
+
+### Luodaan uusi tiiviste ja testisanakirja
+
+Luon uuden SHA-512 crypt -tiivisteen salasanalla `Kekskeksi2026!` (joka pohjautuu sanakirjasanaan `kekskeksi`, mutta sisältää ison alkukirjaimen, numeroita ja erikoismerkin):
+
+```bash
+openssl passwd -6 -salt "rule-testi" Kekskeksi2026! > rule_hash.txt
+
+```
+
+### Hashcat sääntötiedoston kanssa (`-r`)
+
+Hashcat sisältää valmiita sääntötiedostoja hakemistossa `/usr/share/hashcat/rules/`. Käytetään suosittua ja kevyttä `best64.rule`-sääntöstöä:
+
+```bash
+# Tiiviste murto hyödyntäen best64.rule -sääntötiedostoa
+hashcat -m 1800 -a 0 rule_hash.txt perussanakirja.txt -r /usr/share/hashcat/rules/best64.rule
+
+```
 
 
+<details>
+<summary>Murto: </summary>
+
+<img width="1235" height="1151" alt="image" src="https://github.com/user-attachments/assets/e4180442-a079-448b-a065-d6a83982abad" />
+
+
+</details>
