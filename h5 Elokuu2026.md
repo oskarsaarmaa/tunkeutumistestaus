@@ -156,3 +156,69 @@ hashcat -m 0 -a 0 target_hash.txt test_words.txt
 
 ## b) John The Ripper:lla salasanan murto
 
+Testaan John the Ripper -työkalua salatun ZIP-arkiston murtamiseen. John the Ripper vaatii, että salatusta tiedostosta poimitaan ensin tiiviste (hash) sopivalla 2john-apuohjelmalla, jonka jälkeen tiiviste murretaan.
+
+
+### Testiympäristön valmistelu
+
+Luon salatun ZIP-tiedoston ja asetan sille salasanan, joka löytyy sanakirjasta
+
+
+```bash
+# Luodaan esimerkkitiedosto
+echo "Salainen dokumentti." > salaisuus.txt
+
+# Pakataan se salatulla salasanalla käyttäen zip-työkalua
+zip -e --password="kekskeksi" salattu_arkisto.zip salaisuus.txt
+
+# Luodaan sanakirja murtamista varten
+echo -e "password\n123456\nkekskeksi\nadmin" > test_words.txt
+
+```
+
+<details>
+<summary>Tiedostojen luonti</summary>
+
+<img width="564" height="169" alt="image" src="https://github.com/user-attachments/assets/4d94047a-c7cc-4ec0-8ef0-739230607ec4" />
+
+</details>
+
+
+SELITYS
+
+
+### Tiivisteen poimiminen ja murtaminen
+
+John the Ripper ei pysty lukemaan `.zip`-tiedostoa suoraan. Siksi käytetään `zip2john`-apuohjelmaa, joka erottaa tiivisteen muotoon, jota John ymmärtää:
+
+```bash
+# Poimitaan tiiviste ZIP-arkistosta
+zip2john salattu_arkisto.zip > zip_hash.txt
+
+# Tiivisteen murtaminen John the Ripperillä sanakirjaa käyttäen
+john --wordlist=test_words.txt zip_hash.txt
+
+```
+
+<details>
+<summary>Testitulos</summary>
+
+
+<img width="1191" height="259" alt="image" src="https://github.com/user-attachments/assets/d6fdcb9e-f189-46ba-873c-fe6a5ebfd44d" />
+
+
+</details>
+
+
+### Käsitteet ja työkalujen toimintaperiaate (`zip2john`, `pdf2john`, `ssh2john`)
+
+* Mitä ne on: Erilliset apuskriptit ja työkalut, jotka lukevat salatun tiedoston rakenteen ja poimivat sieltä vain sen osan, joka tarvitaan salasanan tarkistamiseen (otsikkotiedot, suola ja laskettu tiiviste).
+
+* Miksi työkaluja tarvitaan: Varsinaiset murtostyökalut (kuten John tai Hashcat) ovat optimoituja käsittelemään pelkkiä tiivisteitä suuren suorituskyvyn saavuttamiseksi. Ne eivät osaa lukea komplekseja tiedostojärjestelmiä tai arkistomuotoja (kuten `.zip`, `.pdf` tai `.docx`) suoraan. Konvertteri eristää matalatasoisen tiivisteen tiedostosta tekstitiedostoon murtamista varten.
+
+
+### John the Ripperin automaattinen tiivisteen tunnistus
+
+* Miten se toimii: Toisin kuin Hashcat (jolle pitää antaa tietty `-m`-parametri, esim. `-m 0`), John the Ripper analysoi syötettävän tiivistetiedoston syntaksia ja tunnistetunnisteita (header/prefix).
+* Kun `zip2john` luo tiivisteen, se alkaa tunnisteella `$zip2$....` John tunnistaa tämän tunnisteen perusteella automaattisesti kyseessä olevan ZIP-arkiston PKZIP/WinZip-tiiviste ja valitsee oikean sisäisen murtosilmukan ilman käyttäjän erillistä komentoa.
+
