@@ -450,3 +450,13 @@ hashcat -m 1800 -a 0 rule_hash.txt perussanakirja.txt -r /usr/share/hashcat/rule
 
 
 </details>
+
+
+
+<img width="346" height="100" alt="image" src="https://github.com/user-attachments/assets/bd995a9d-82d0-4a92-acea-2597dbf99b67" />
+
+
+
+<img width="332" height="53" alt="image" src="https://github.com/user-attachments/assets/34060548-b092-443a-9435-155e9a70bc83" />
+
+
