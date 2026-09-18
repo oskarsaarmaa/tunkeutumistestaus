@@ -151,3 +151,8 @@ hashcat -m 0 -a 0 target_hash.txt test_words.txt
 </details>
 
 
+*
+
+
+## b) John The Ripper:lla salasanan murto
+
