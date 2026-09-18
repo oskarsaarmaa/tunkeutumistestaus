@@ -106,10 +106,19 @@ hashcat -m 0 -a 0 target_hash.txt test_words.txt
 
 
 
+<details>
+<summary>Exhausted: </summary>
+
+<img width="1210" height="1124" alt="image" src="https://github.com/user-attachments/assets/527385d0-e9ea-48c1-8b05-8fbb02997548" />
+
+
+
+</details>
+
 
 * Testin tulokseksi tuli Exhausted joka tarkoittaa sitä, että Hashcat kävi läpi koko sanakirjan jokaisen sanan (tässä tapauksessa 4 sanaa), mutta oikeaa salasanaa ei löytynyt kyseisestä sanalistasta.
-* Recovered......: 0/1 (0.00%) vahvistaa sen ettei tiivistetä saatu murrettua.
-* Näin kävi, koska sanalistassani test_words.txt oli 4 sanaa (Passwords..: 4 ja ehdokkaat password -> admin) Jos target_hash.txt tiedostossa oleva tiiviste on laskettu jostakin muusta sanasta (esim, keksiteksti) Hashcat vertaa tiivistettä vain niihin 4 sanaan eikä löydä osumaa.
+* `Recovered........: 0/1 (0.00%)` vahvistaa sen ettei tiivistetä saatu murrettua.
+* Näin kävi, koska sanalistassani `test_words.txt oli 4 sanaa (Passwords..: 4 ja ehdokkaat password -> admin)`. Jos `target_hash.txt` tiedostossa oleva tiiviste on laskettu jostakin muusta sanasta (esim. `keksiteksti`) Hashcat vertaa tiivistettä vain niihin 4 sanaan eikä löydä osumaa.
 * Cracked tilan saan saavutettua siten, että lisään murtamani sanan sanakirjaan:
 
 
@@ -122,11 +131,20 @@ hashcat -m 0 -a 0 target_hash.txt test_words.txt
 </details>
 
 
+* `echo -n "kekskeksi"`: `echo` tulostaa merkkijonon. Lippu `-n` (no newline) estää rivinvaihtomerkin (`\n`) lisäämisen merkkijonon perään. Tämä on kriittistä, sillä muuten tiiviste laskettaisiin merkkijonolle `"kekskeksi\n"`, mikä antaisi täysin eri MD5-arvon.
+* `|` (putki): Ohjaa vasemmanpuoleisen komennon tulosteen suoraan oikealla olevan komennon syötteeksi.
+* `md5sum`: Laskee syötteestä 128-bittisen MD5-tiivisteen.
+* `cut -d' ' -f1`: Pilkkoo `md5sum`-komennon tulosteen. Lippu `-d' '` määrittää erottimeksi välilyönnin ja `-f1` valitsee ensimmäisen kentän (eli pelkän tiivisteen), jolloin tulosteesta poistetaan sen perään tulostuva viiva `-`.
+* `>`: Ohjaa tulosteen tiedostoon (ja ylikirjoittaa tiedoston, jos se on jo olemassa).
+* `echo -e`: Lippu `-e` mahdollistaa erikoismerkkien (kuten `\n` = uusi rivi) tulkkaamisen, jolloin sanakirjaan saadaan jokainen sana omalle rivilleen.
+* `hashcat -m 0`: Määrittää murtokohteen tiivisteosio/algoritmin tyypin (Hash Type). `0` tarkoittaa perus MD5-tiivistettä.
+* `hashcat -a 0`: Määrittää hyökkäysmuodon (Attack Mode). `0` tarkoittaa suoraa sanakirjahyökkäystä (Straight / Dictionary attack).
   
 
 <details>
-<summary>Testitulos: </summary>
+<summary>Cracked: </summary>
 
+<img width="1201" height="1135" alt="image" src="https://github.com/user-attachments/assets/d12b5ae5-4bdb-4d9f-8dbd-f14d986c7767" />
 
 
 
