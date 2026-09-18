@@ -45,3 +45,91 @@ Asennetaan Hashcat ja murretaan standardi MD5-tiiviste sanakirjahyökkäyksellä
 ```bash
 sudo apt-get update
 sudo apt-get install -y hashcat
+
+
+# Tarkistetaan järjestelmän suorituskyky ja tunnistetut laitteet
+hashcat -I
+
+```
+
+
+
+Tarkistan järjestelmän suorituskyky ja tunnistetut laitteet (CPU/GPU) komennolla `hashcat -I`
+
+
+<details>
+<summary>Testitulos</summary>
+
+<img width="593" height="318" alt="image" src="https://github.com/user-attachments/assets/5b1c28cf-6e5a-4562-8c4e-c53ec0bc77cf" />
+
+
+</details>
+
+* Virheen syy: Hashcat tarvitsee OpenCL-, CUDA- tai HIP-laskenta-alustan, jota järjestelmästä ei aluksi löytynyt (esim. virtuaalikoneesta puuttuvan GPU-ajurin vuoksi).
+* Miksi se ei toiminut: Ilman yhteensopivaa ajuria Hashcat ei osannut kääntää eikä siirtää rinnakkaislaskennan koodia laitteistosi käsiteltäväksi.
+* Miksi se toimii nyt: Asennettu `pocl-opencl-icd` paketti toimii tulkkina, joka kääntää Hashcatin OpenCL-koodin lennosta prosessorisi (CPU) omiksi x86-konekieliohjeiksi.
+* Nykytila: PoCL esittää prosessorisi Hashcatille OpenCL-yhteensopivana laskentalaitteena, jolloin ohjelma pystyy hyödyntämään CPU:n kaikkia ytimiä salasanatiivisteiden murtamiseen.
+
+
+<details>
+<summary>Testitulos</summary>
+
+<img width="929" height="447" alt="image" src="https://github.com/user-attachments/assets/1c1a2dfa-e8bd-4546-a21f-f043d83d07de" />
+
+
+</details>
+
+
+### Testaus MD5-tiivisteen murtaminen
+
+Luodaan testitiiviste. MD5-tiiviste sanalle `kekskeksi` on `26e25721113b6b1580231920cf67210e`.
+
+```bash
+# Tallennetaan tiiviste tiedostoon
+echo "26e25721113b6b1580231920cf67210e" > target_hash.txt
+
+# Luodaan pieni testaussanakirja
+echo -e "password\n123456\nkekskeksi\nadmin" > test_words.txt
+
+# Ajetaan Hashcat (Mode -m 0 = MD5, -a 0 = Straight/Dictionary)
+hashcat -m 0 -a 0 target_hash.txt test_words.txt
+
+```
+
+<details>
+<summary>Tiedostojen luonti: </summary>
+
+<img width="1392" height="160" alt="image" src="https://github.com/user-attachments/assets/84ff1997-d0a6-4dea-9afd-987aab8d4fcc" />
+
+
+</details>
+
+
+
+
+* Testin tulokseksi tuli Exhausted joka tarkoittaa sitä, että Hashcat kävi läpi koko sanakirjan jokaisen sanan (tässä tapauksessa 4 sanaa), mutta oikeaa salasanaa ei löytynyt kyseisestä sanalistasta.
+* Recovered......: 0/1 (0.00%) vahvistaa sen ettei tiivistetä saatu murrettua.
+* Näin kävi, koska sanalistassani test_words.txt oli 4 sanaa (Passwords..: 4 ja ehdokkaat password -> admin) Jos target_hash.txt tiedostossa oleva tiiviste on laskettu jostakin muusta sanasta (esim, keksiteksti) Hashcat vertaa tiivistettä vain niihin 4 sanaan eikä löydä osumaa.
+* Cracked tilan saan saavutettua siten, että lisään murtamani sanan sanakirjaan:
+
+
+<details>
+<summary>Sanakirjojen muokkaus: </summary>
+
+<img width="598" height="108" alt="image" src="https://github.com/user-attachments/assets/81695fc6-1353-40e4-aefa-613c48d7d3af" />
+
+
+</details>
+
+
+  
+
+<details>
+<summary>Testitulos: </summary>
+
+
+
+
+</details>
+
+
