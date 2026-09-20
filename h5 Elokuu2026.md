@@ -423,25 +423,91 @@ Käytän `cewl`-työkalua, joka crawling-menetelmällä kerää verkkosivulta sa
 
 ## f) Hash rules
 
-### Luodaan uusi tiiviste ja testisanakirja
+Suoritan sääntöpohjaisen hyökkäyksen (Rule-based attack) Hashcat-työkalulla. Testin tekemiseen luon SHA-512 crypt -tiivisteen salasanalle, joka pohjautuu tavalliseen sanakirjasanaan, mutta sisältää lisäksi ison alkukirjaimen, vuosiluvun sekä erikoismerkin (`Kekskeksi2026!`). Testaan murtamista ensin valmiilla best66.rule-sääntötiedostolla.
 
-Luon uuden SHA-512 crypt -tiivisteen salasanalla `Kekskeksi2026!` (joka pohjautuu sanakirjasanaan `kekskeksi`, mutta sisältää ison alkukirjaimen, numeroita ja erikoismerkin):
+
+Testin tavoitteet:
+* Osoittaa sääntöjen toimintaperiaate: Miten Hashcat muokkaa sanakirjasanoja keskusmuistissa ilman, että kovalevylle tarvitsee generoida jättimäisiä sanakirjatiedostoja.
+* Testata salasanamukautusten turvallisuutta: Osoittaa, että ihmetyyppiset salasanamutaatiot (kuten vuosiluvun tai huutomerkin lisääminen loppuun) ovat haavoittuvaisia, jos salasanan kantaosa perustuu sanakirjasanaan.
+
+
+### Testiympäristön alustus ja tiivisteen luonti
+
+Luon ensin SHA-512 crypt -tiivisteen salasanalla `Kekskeksi2026!` (joka pohjautuu sanakirjasanaan `kekskeksi`, mutta sisältää ison alkukirjaimen, numeroita ja erikoismerkin).
+Syötteeksi tarkoitettuun perussanakirjaan (perussanakirja.txt) jätetään ainoastaan selkokielinen perussana kekskeksi.
 
 ```bash
 openssl passwd -6 -salt "rule-testi" Kekskeksi2026! > rule_hash.txt
 
+# Sanakirja, joka sisältää vain kantasanan
+echo "kekskeksi" > perussanakirja.txt
 ```
 
-### Hashcat sääntötiedoston kanssa (`-r`)
+### Valmiin sääntötiedoston testaus (best66.rule)
 
 Hashcat sisältää valmiita sääntötiedostoja hakemistossa `/usr/share/hashcat/rules/`. Käytetään suosittua ja kevyttä `best64.rule`-sääntöstöä:
 
 ```bash
-# Tiiviste murto hyödyntäen best64.rule -sääntötiedostoa
-hashcat -m 1800 -a 0 rule_hash.txt perussanakirja.txt -r /usr/share/hashcat/rules/best64.rule
+
+hashcat -m 1800 -a 0 rule_hash.txt perussanakirja.txt -r /usr/share/hashcat/rules/best66.rule
 
 ```
 
+Komennon parametrien erittely:
+* `-m 1800`: Hashcat-hash-tyyppi SHA-512 Crypt (`$6$`).
+* `-a 0`: Hyökkäysmuoto (Straight / Dictionary attack).
+* `-r /usr/share/hashcat/rules/best66.rule`: Sovellettava sääntötiedosto.
+  
+
+<details>
+<summary>Testitulos 1: </summary>
+
+<img width="1201" height="1114" alt="image" src="https://github.com/user-attachments/assets/e572da2a-31f7-4d96-abc4-f20acd8370d0" />
+
+
+</details>
+
+
+Ensimmäisen hyökkäyksen tulos ja analyysi:
+Hyökkäys päättyi tulokseen `Status...........: Exhausted` ja `Recovered........: 0/1 (0.00%)`.
+* Testi epäonnistui, koska Hashcat raportoi `Rules: 66` ja `Keyspace..: 66`. Valmis `best66.rule` generoi jokaisesta sanakirjan sanasta 66 eri variaatiota. Yksikään näistä vakiosäännöistä ei kuitenkaan sisältänyt yhdistelmää, joka olisi samanaikaisesti muuttanut alkukirjaimen isoksi ja lisännyt loppuun merkkijonon `2026!`.
+* Laskentatehon rajoite: Hashcat ilmoitti lisäksi varoituksen `The wordlist or mask that you are using is too small`. Koska avaruus oli vain 66 kandidaattia.
+
+
+### Salasanan murtaminen omalla säännöllä
+`best66.rule` ei tuottanut tulosta, kokeilin luoda oman säännön salasanamurtoa varten (`oma.rule`).
+
+```bash
+
+echo 'c $2 $0 $2 $6 $!' > oma.rule
+
+```
+
+<details>
+<summary>Säännön  luonti: </summary>
+
+
+<img width="332" height="53" alt="image" src="https://github.com/user-attachments/assets/34060548-b092-443a-9435-155e9a70bc83" />
+
+</details>
+
+Sääntökielen syntaksin selitys:
+* `c` (Capitalize): Muuntaa sanan ensimmäisen merkin isoksi ja loput pieniksi (`kekskeksi` -> `Kekskeksi`).
+* `$2` (Append character): Lisää merkin 2 sanan loppuun (`Kekskeksi` -> `Kekskeksi2`).
+* `$0`: Lisää merkin `0` sanan loppuun (`Kekskeksi2` -> `Kekskeksi20`).
+* `$2`: Lisää merkin `2` sanan loppuun (`Kekskeksi20` -> `Kekskeksi202`).
+* `$6`: Lisää merkin `6` sanan loppuun (`Kekskeksi202` -> `Kekskeksi2026`).
+* `$!`: Lisää erikoismerkin `!` sanan loppuun (`Kekskeksi2026` -> `Kekskeksi2026!`).
+
+
+### 4. Onnistunut murto omalla säännöllä
+Hyökkäys uudella sääntötiedostolla:
+
+```bash
+
+hashcat -m 1800 -a 0 rule_hash.txt perussanakirja.txt -r oma.rule
+
+```
 
 <details>
 <summary>Murto: </summary>
@@ -452,11 +518,20 @@ hashcat -m 1800 -a 0 rule_hash.txt perussanakirja.txt -r /usr/share/hashcat/rule
 </details>
 
 
+### Tuloksen analysointi
+Hyökkäys onnistui sain `Status...........: Cracked` ja `Recovered........: 1/1 (100.00%) Digests (total)`
+* Hashcat ehdotti: `Candidates.#01...: Kekskeksi2026! -> Kekskeksi2026!` mikä on oikea salasana.
+* Hashcat mursi salasanan `Speed.#01........: 223 H/s` eli noin 24 millisekunnissa vaikka käytössä oli hidas SSHA-512 crypt algorytmi (joka käyttää oletuksena 5000 kierroksen heisatusta/rounds)
 
-<img width="346" height="100" alt="image" src="https://github.com/user-attachments/assets/bd995a9d-82d0-4a92-acea-2597dbf99b67" />
+
+### Lähteet
+
+Hashcat Wiki. rule-based attack documentation. Saatavilla:  https://hashcat.net/wiki/doku.php?id=rule_based_attack
+
+Debian Manpages. shadow - encrypted password file. Saatavilla: https://manpages.debian.org/unstable/passwd/shadow.5.en.html
 
 
 
-<img width="332" height="53" alt="image" src="https://github.com/user-attachments/assets/34060548-b092-443a-9435-155e9a70bc83" />
+
 
 
