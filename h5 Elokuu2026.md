@@ -150,8 +150,17 @@ hashcat -m 0 -a 0 target_hash.txt test_words.txt
 
 </details>
 
+Tulosten analyysi:
+* Tulos: `Status: Cracked`
+* Murtunut tiiviste: `c059c42247fa365408bab0550e0d228e:kekskeksi`
+* Aika: 0 sekuntia (laskentanopeus 5387 H/s).
+  
+### Lähteet:
+[Hashcat Wiki – Official Documentation](https://hashcat.net/wiki)
 
-*
+[Hashcat Wiki – Mask Attack](https://hashcat.net/wiki/doku.php?id=mask_attack)
+
+[Kali Linux Tools – Hashcat](https://www.kali.org/tools/hashcat)
 
 
 ## b) John The Ripper:lla salasanan murto
@@ -161,7 +170,7 @@ Testaan John the Ripper -työkalua salatun ZIP-arkiston murtamiseen. John the Ri
 
 ### Testiympäristön valmistelu
 
-Luon salatun ZIP-tiedoston ja asetan sille salasanan, joka löytyy sanakirjasta
+luon salatun ZIP-arkisto `salattu_arkisto.zip` sekä suppean sanakirjan `test_words.txt`, joka sisältää murtokohteena olevan salasanan (`kekskeksi`):
 
 
 ```bash
@@ -184,7 +193,6 @@ echo -e "password\n123456\nkekskeksi\nadmin" > test_words.txt
 </details>
 
 
-SELITYS
 
 
 ### Tiivisteen poimiminen ja murtaminen
@@ -229,6 +237,25 @@ Kuten yllä olevasta tulosteesta näkyy, hyökkäys onnistui välittömästi:
 
 * Miten se toimii: Toisin kuin Hashcat (jolle pitää antaa tietty `-m`-parametri, esim. `-m 0`), John the Ripper analysoi syötettävän tiivistetiedoston syntaksia ja tunnistetunnisteita (header/prefix).
 * Kun `zip2john` luo tiivisteen, se alkaa tunnisteella `$zip2$....` John tunnistaa tämän tunnisteen perusteella automaattisesti kyseessä olevan ZIP-arkiston PKZIP/WinZip-tiiviste ja valitsee oikean sisäisen murtosilmukan ilman käyttäjän erillistä komentoa.
+
+
+
+### Komentojen ja parametrien selitys
+* Komento `zip -e --password="..."`: Luoda salattu ZIP-arkisto ja asetettaa sille tietty salasana.
+* Komento `zip2john`: Mahdollistaa John The Ripper:in `.zip` tiedostojen lukemisen.
+* Komento `john --wordlist=...`: Määrittää käytettävän selkokielisen sanakirjalistan (Straight / Dictionary Attack).
+
+
+### Lähteet:
+
+[John the Ripper Official Documentation](https://www.openwall.com/john/doc/)
+
+[John the Ripper User's Guide](https://www.openwall.com/john/doc/)
+
+[Kali Linux Tools – John the Ripper](https://www.kali.org/tools/john/)
+
+[Openwall GitHub – John the Ripper Jumbo](https://github.com/openwall/john)
+
 
 
 ## c) Tiedosto
@@ -278,8 +305,19 @@ john --wordlist=test_words.txt 7z_hash.txt
 
 Murto onnistui ja tuloksista voidaan tehdä seuraavat havainnot:
 * Automaattinen tunnistus: John the Ripper tunnisti algoritmin oikein: `Loaded 1 password hash (7z, 7-Zip archive encryption [SHA256 256/256 AVX2 8x AES])`.
+* Murtotulos: Oikea salasana löyty: `kekskeksi`.
 * Laskentateho ja iteraatiot: Tulosteessa rivi `Cost 1 (iteration count) is 524288` osoittaa, että 7-Zip kierrättää tiivistettä yli puoli miljoonaa kertaa salasanan tarkistamiseksi.
 * Nopeusero: Suuren iteraatiomäärän vuoksi murtonopeus oli vain 12.50 c/s (tiivistettä/s), kun aiemmalla ZIP-arkistolla se oli 133.3 c/s. Tämä osoittaa käytännössä, miksi 7z-rakenne suojaa brute-force-hyökkäyksiltä merkittävästi paremmin kuin vanhat arkistomuodot.
+
+
+### Lähteet:
+
+[John the Ripper Official Documentation – Openwall](https://www.openwall.com/john/doc/)
+
+[Kali Linux Tools – John the Ripper & 7z2john](https://www.kali.org/tools/john/)
+
+
+
 
 
 ## d) Linux-käyttäjän tiivisteen murtaminen (`/etc/shadow`)
@@ -379,6 +417,17 @@ openssl passwd -6 -salt "testisalt" kekskeksi > sha512_hash.txt
 * Murtotulos: Sanakirjahyökkäys täsmäsi välittömästi ja tiivisteestä paljastui selkokielinen salasana `kekskeksi`.
 * Luonnissa käytetty suola (`testisalt`) yhdistettiin salassapidettyyn sanaan ennen tiivistämistä. Tämä varmistaa sen, että vaikka kahdella eri käyttäjällä olisi sama salasana, `/etc/shadow`-tiedostossa olevat tiivisteet näyttävät täysin erilaisilta.
 
+### Läheteet:
+[John the Ripper User's Guide – Openwall](https://www.openwall.com/john/doc/OPTIONS.shtml)
+
+[Kali Linux Tools Documentation – John the Ripper](https://www.kali.org/tools/john/)
+
+[Linux Manual Pages – shadow(5) Password File Format](https://man7.org/linux/man-pages/man5/shadow.5.html)
+
+[OpenSSL Manual – openssl-passwd Password Hash Generator](https://www.openssl.org/docs/manmaster/man1/openssl-passwd.html)
+
+[Debian Security Wiki – Yescrypt Password Hashing Standard](https://wiki.debian.org/crypt)
+
 
 ## e) Sanakirja
 
@@ -405,20 +454,49 @@ Käytän `cewl`-työkalua, joka crawling-menetelmällä kerää verkkosivulta sa
 
 </details>
 
+
+### Havainnot
+
 * Sanojen kerääminen `cewl`-työkalulla: `cewl`-työkalu paikallista HTTP-palvelinta vasten. Parametrilla `-m 4`, joka poimii sivulta kaikki vähintään 4 merkin pituiset sanat ja tallentaa ne mukautetuksi sanakirjaksi (`mukautettu_sanakirja.txt`).
 * Palvelimen loki vahvistaa hyökkäyksen onnistumisen tila koodilla `GET /testisivu.html HTTP/1.1 200`, mikä osoittaa `cewl`:n hakeneen sivun sisällön onnistuneesti.
 
 
+### Tiivisteen murtaminen 
+
+Ajan hyökkäyksen aiemmin luomaallani `sha512_hash.txt` tiivisteellä kerättyä sanakirjaa hyödyntäen:
+
+```bash
+john --wordlist=mukautettu_sanakirja.txt sha512_hash.txt
+
+```
+
 <details>
-<summary>Murto</summary>
+<summary>Murto: </summary>
 
 <img width="635" height="184" alt="image" src="https://github.com/user-attachments/assets/e1b06729-90b4-4915-a387-d669a3a0f34a" />
 
 
 </details>
 
+### Testitulos ja havainnot:
+
 * Murtaminen kohdennetulla sanakirjalla: Ajoin John the Ripper käyttäen syötteenä kerättyä sanakirjaa (`--wordlist=mukautettu_sanakirja.txt`).
 * Jouduin käyttämään `john --show sha512_hash.txt`, koska `John The Ripper` on aiemmin jo murtanut tiivisteen ja tallentanut sen muistiinsa. Vaihtoehtoisesti olisin voinut poistaa tiedoston ja ajaa komennon uusiksi.
+
+
+
+### Lähteet:
+
+[DigiNinja – CeWL Custom Word List Generator](https://digi.ninja/projects/cewl.php)
+
+[Kali Linux Tools – CeWL Documentation](https://www.kali.org/tools/cewl/)
+
+[John the Ripper Official Documentation – Openwall](https://www.openwall.com/john/doc/)
+
+[John the Ripper User's Guide (POT file mechanics) – Openwall Wiki](https://www.openwall.com/john/doc/OPTIONS.shtml)
+
+[Python 3 Documentation – http.server module](https://docs.python.org/3/library/http.server.html)
+
 
 
 ## f) Hash rules
@@ -526,9 +604,9 @@ Hyökkäys onnistui sain `Status...........: Cracked` ja `Recovered........: 1/1
 
 ### Lähteet
 
-Hashcat Wiki. rule-based attack documentation. Saatavilla:  https://hashcat.net/wiki/doku.php?id=rule_based_attack
+[Hashcat Wiki. rule-based attack documentation](https://hashcat.net/wiki/doku.php?id=rule_based_attack)
 
-Debian Manpages. shadow - encrypted password file. Saatavilla: https://manpages.debian.org/unstable/passwd/shadow.5.en.html
+[Debian Manpages. shadow - encrypted password file](https://manpages.debian.org/unstable/passwd/shadow.5.en.html)
 
 
 
