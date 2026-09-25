@@ -392,6 +392,7 @@ ffuf -w ~/wordlists/common.txt -u http://ffuf.test/cd/rate/FUZZ -mc 200,429
 <details>
 <summary>fuff-tulos:</summary>
 
+<img width="748" height="395" alt="image" src="https://github.com/user-attachments/assets/49968fe4-aa8d-474d-abaa-496c899d72c1" />
 
 
 </details>
@@ -405,14 +406,65 @@ Komento:
 ffuf -w ~/wordlists/common.txt -t 5 -p 0.1 -u http://ffuf.test/cd/rate/FUZZ -mc 200,429
 
 ```
+* `-p 0.1`: Asettaa pyyntöjen väliin 0,1 sekunnin viiveen
+* `-t 1`: Rajoittaa suoritussäikeiden (threads) määrän yhteen, jotta pyynnöt lähtevät sekvenssissä ilman rinnakkaisuutta.
+* `-mc 200`: Huomioi vain onnistuneet HTTP 200 -vastaukset ja jättää 429-virheet huomiotta.
+  
+
+<details>
+<summary>fuff-tulos:</summary>
+
+<img width="810" height="413" alt="image" src="https://github.com/user-attachments/assets/4e971581-0a0d-4be3-8fdd-e1858434de47" />
+
+
+</details>
+
+* Skanni ei palauttanut odotettua tulosta: `oracle`-tiedostoa en ole ihan varma miksi ei palauttanut.
+
+Lähde:
+
+[Rate Limited](http://ffuf.me/cd/rate)
+
+
+## i) Subdomains - Virtual Host Enumeration
+
+* Tavoite: Löytää järjestelmään määritellyt virtuaaliset isännät (Virtual Hosts / Vhosts) fuzzaamalla HTTP-pyynnön `Host:`-otsaketta.
+
+Komento:
+
+```bash
+fuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://ffuf.me
+
+```
 
 <details>
 <summary>fuff-tulos:</summary>
 
 
 
+
 </details>
+
+* Jokainen tulos on kooltaan 1495 tavua.
+* Kokeilen seuraavaksi suodattaa tulokset siten, että ainoastaan näen tulokset jotka ei ole 1495 tavua kooltaan.
+
+Komento:
+
+```bash
+ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://ffuf.me -fs 1495
+
+```
+
+<details>
+<summary>fuff-tulos:</summary>
+
+
+
+
+</details>
+
+* Komento löysi domainin: `redhat`
 
 Lähde:
 
-[Rate Limited](http://ffuf.me/cd/rate)
+[Subdomains - Virtual Host Enumeration](http://ffuf.me/sub/vhost)
