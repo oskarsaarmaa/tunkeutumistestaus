@@ -137,3 +137,282 @@ Lähde:
 
 
 ## b) FuffMe-ympäristön asennus
+
+* Tavoite: Asentaa `ffufme`-harjoitusympäristö Docker-konttina.
+
+
+### Asennuskomennot
+
+```bash
+# Päivitän koneen ja asennan tarvittavat työkalut
+sudo apt-get update
+sudo apt-get install -y docker.io git ffuf
+
+```
+
+<details>
+<summary>Työkalujen asennus:</summary>
+
+<img width="978" height="526" alt="image" src="https://github.com/user-attachments/assets/5d07c683-504f-4764-9abd-cc9eace530f2" />
+
+
+</details>
+
+```bash
+# Kloonaan ffufme-repositorion ja rakennan kontin
+git clone https://github.com/adamtlangley/ffufme
+cd ffufme/
+sudo docker build -t ffufme .
+
+```
+
+<details>
+<summary>Respon kloonaus ja kontin rakennus:</summary>
+
+<img width="1004" height="656" alt="image" src="https://github.com/user-attachments/assets/6399e6b0-9410-48fc-b67c-edc54919ff5f" />
+
+
+</details>
+
+```bash
+# Käynnistän kontin portissa 80
+sudo docker run -d -p 80:80 ffufme
+
+```
+
+<details>
+<summary>Kontin käynnistys:</summary>
+
+<img width="534" height="61" alt="image" src="https://github.com/user-attachments/assets/fadf8df5-482f-4f1e-b650-697426bfb4ae" />
+
+
+</details>
+
+```bash
+# Lataan tarvittavat sanalistat
+mkdir -p wordlists
+cd wordlists
+wget http://ffuf.me/wordlist/common.txt
+wget http://ffuf.me/wordlist/parameters.txt
+wget http://ffuf.me/wordlist/subdomains.txt
+
+```
+
+<details>
+<summary>Sanalistojen lataaminen:</summary>
+
+
+<img width="733" height="661" alt="image" src="https://github.com/user-attachments/assets/6312b175-405f-4ccc-81a6-86711ec7af23" />
+
+
+</details>
+
+
+* Testaan maalin toimivuuden ajamalla:
+
+```bash
+curl -si http://localhost | grep -i "title"
+
+```
+
+<details>
+<summary>Maalin toimivuuden testaaminen:</summary>
+
+<img width="396" height="91" alt="image" src="https://github.com/user-attachments/assets/5d483a8a-0775-4f01-bded-1c5b9ce4f434" />
+
+
+</details>
+
+* `<title>FFUF.me</title>` osoittaa testi ympäristön olevan valmis.
+
+Lähde: 
+
+[Fuffme - Install Web Fuzzing Target on Debian](https://terokarvinen.com/2023/fuffme-web-fuzzing-target-debian/)
+
+
+## c) Basic Content Discovery
+
+* Tavoite: Etsiä piilotetut hakemistot ja tiedostot
+
+Komento:
+
+```bash
+
+ffuf -w $HOME/wordlists/common.txt -u http://localhost/cd/basic/FUZZ
+
+```
+
+<details>
+<summary>fuff tulos:</summary>
+
+<img width="744" height="444" alt="image" src="https://github.com/user-attachments/assets/df7a72bb-79e8-411c-ba23-2487d5efb9dd" />
+
+
+</details>
+
+* Löydökset: Hakemisto `/class` sekä lokitiedosto `/development.log`.
+
+Lähde: 
+
+[Content Discovery - Basic](http://ffuf.me/cd/basic)
+
+
+## d) Content Discovery With Recursion
+
+* Tavoite: Etsiä hakemistoja rekursiivisesti eli käydä automaattisesti läpi myös löytyneiden alihakemistojen sisältö.
+
+Komento:
+
+```bash
+ffuf -w $HOME/wordlists/common.txt -u http://localhost/cd/recursion/FUZZ -recursion
+
+
+```
+
+<details>
+<summary>fuff-tulos:</summary>
+
+<img width="742" height="572" alt="image" src="https://github.com/user-attachments/assets/fa13a7c2-ba6e-4036-828f-9c6571464783" />
+
+
+</details>
+
+* Rekursion toiminta: `-recursion`-parametri käskee `fuff`:ia a lisäämään jokaisen löytyneen hakemiston (status 200/301/302) jonoon ja suorittamaan uuden fuzzauksen kyseiseen polkuun
+* Löydös: `/admin`-hakemisto, `/admin/users`-hakemisto ja `/admin/users/96`
+
+Lähde:
+
+[Content Discovery With Recursion](http://ffuf.me/cd/recursion)
+
+## e) Content Discovery With File Extensions
+
+* Tavoite: Etsiä tiedostoja tiettyjen tiedostotarkenteiden perusteella (esim. .php, .txt, .log).
+
+Komento:
+
+```bash
+ffuf -w $HOME/wordlists/common.txt -u http://localhost/cd/ext/FUZZ -e .php,.txt,.log
+
+
+```
+
+<details>
+<summary>fuff-tulos:</summary>
+
+<img width="741" height="433" alt="image" src="https://github.com/user-attachments/assets/c20079ef-5e5c-4ccd-8fe4-7747717d72e4" />
+
+
+</details>
+
+* Skanni löysi tiedoston `/logs/users.log`
+* `-e`-parametri i liittää jokaisen sanalistan sanan perään määritellyt päätteet. Esimerkiksi sana `config` testataan muodossa: `config`, `config.php`, `config.txt` ja `config.log`.
+
+Lähde:
+
+[Content Discovery With File Extensions](http://ffuf.me/cd/ext)
+
+## f) No 404 Status
+
+* Tavoite: Löytää piilotettu sisältö sovelluksesta, joka palauttaa `HTTP 200 OK `myös silloin, kun sivua ei ole olemassa.
+
+Komento:
+
+```bash
+ffuf -w ~/wordlists/common.txt -u http://ffuf.me/cd/no404/FUZZ
+
+```
+
+<details>
+<summary>fuff-tulos:</summary>
+
+<img width="741" height="187" alt="image" src="https://github.com/user-attachments/assets/39ae0508-d7c1-4ddc-9aca-8cbb7e7dfb76" />
+
+
+</details>
+
+* Fuffin skanni palautti jokaiselle sanalle tilakoodin 200 OK. Vasteen rivimäärä oli kuitenkin virheellisillä sivuilla vakio.
+* Seuraavaksi ajan saman komennon, mutta suodatan tulokset siten että lisän `-fs`-parametriin loppuun`669`-option joka suodattaa pois kaikki tulokset jotka ovat `669` tavua pitkiä.
+
+Komento:
+
+```bash
+ffuf -w ~/wordlists/common.txt -u http://ffuf.me/cd/no404/FUZZ -fs 669
+
+```
+
+<details>
+<summary>fuff-skanni:</summary>
+
+<img width="789" height="427" alt="image" src="https://github.com/user-attachments/assets/00b88c95-6d4b-475e-a45c-62352a510373" />
+
+</details>
+
+* Suodatuksen avulla sain piilotettua kaikki virheelliset tulokset ja sain piilotetun sivun: `secret` esiin.
+  
+Lähde:
+
+[No 404 Status](http://ffuf.me/cd/no404)
+
+## g) Param Mining
+Tavoite: Etsiä toiminnallinen GET-parametri, joka muuttaa sivun käyttäytymistä. EI OO VALMIS
+
+Komento:
+
+```bash
+ffuf -w ~/wordlists/parameters.txt -u http://ffuf.me/cd/param/data?FUZZ=1
+
+```
+
+<details>
+<summary>fuff-testitulos:</summary>
+
+<img width="765" height="419" alt="image" src="https://github.com/user-attachments/assets/b4ea05ae-d731-41f8-a23c-d2efc687de2c" />
+
+
+</details>
+
+* Skanni löytää puuttuvan parametrin: `debug`
+  
+
+Lähde:
+
+[Param Mining](http://ffuf.me/cd/param)
+
+## h) Rate Limited
+
+Tavoite: Fuzzata kohdetta, joka rajoittaa pyyntöjen määrää (Rate Limiting) ja palauttaa virhekoodin `429 Too Many Requests` liian nopeista pyynnöistä.
+
+Komento:
+
+```bash
+ffuf -w ~/wordlists/common.txt -u http://ffuf.test/cd/rate/FUZZ -mc 200,429
+
+```
+
+<details>
+<summary>fuff-tulos:</summary>
+
+
+
+</details>
+
+* Komento lähettää jatkuvasti pyyntöjä kohteeseen kunnes palvelimeen on tullu liian monta pyyntöä lyhessä aikavälissä, jonka jälkeen palvelin väliaikaisesti estää pyyntöjen lähettämisen.
+
+
+Komento:
+
+```bash
+ffuf -w ~/wordlists/common.txt -t 5 -p 0.1 -u http://ffuf.test/cd/rate/FUZZ -mc 200,429
+
+```
+
+<details>
+<summary>fuff-tulos:</summary>
+
+
+
+</details>
+
+Lähde:
+
+[Rate Limited](http://ffuf.me/cd/rate)
