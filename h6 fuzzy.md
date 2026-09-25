@@ -440,7 +440,7 @@ fuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://ffuf.me
 <details>
 <summary>fuff-tulos:</summary>
 
-
+<img width="783" height="422" alt="image" src="https://github.com/user-attachments/assets/7d22ecb0-667c-4d62-b41a-5bf1fdbb427d" />
 
 
 </details>
@@ -458,7 +458,7 @@ ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://ffuf.me -fs
 <details>
 <summary>fuff-tulos:</summary>
 
-
+<img width="745" height="442" alt="image" src="https://github.com/user-attachments/assets/37ec9a05-889f-4668-abb6-39657980567f" />
 
 
 </details>
@@ -468,3 +468,11 @@ ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://ffuf.me -fs
 Lähde:
 
 [Subdomains - Virtual Host Enumeration](http://ffuf.me/sub/vhost)
+
+## Yhteenveto
+
+Harjoituksessa syvennyttiin ffuf-työkalun käyttöön web-sovellusten tietoturvakartoituksessa. Mielestäni tärkempiä opittuja asioita olivat:
+
+* Suodatuksen merkitys: Raaka fuzzgaus tuottaa usein satoja vääriä positiivisia vastauksia. Tuloksien  suodattaminen koon (`-fs`), tilakoodin (`-fc`) tai rivimäärän (`-fl`) perusteella on kriittistä tulosten analysoinnissa.
+* Monipuolisuus: Web-fuzzaus ei rajoitu vain hakemistoihin (`/FUZZ`), vaan ulottuu otsakkeisiin (`Host: FUZZ`), parametreihin (`?FUZZ=1`) ja pyyntömenetelmiin (`POST`).
+* Eettisyys ja suorituskyky: Suurien pyyntömäärien hallinta (`-p`, `-t`) on välttämätöntä reaalimaailman testeissä palveluiden ylikuormittamisen välttämiseksi.
