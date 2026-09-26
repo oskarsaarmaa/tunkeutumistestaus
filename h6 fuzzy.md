@@ -354,7 +354,7 @@ Lähde:
 [No 404 Status](http://ffuf.me/cd/no404)
 
 ## g) Param Mining
-Tavoite: Etsiä toiminnallinen GET-parametri, joka muuttaa sivun käyttäytymistä. EI OO VALMIS
+
 
 Komento:
 
@@ -366,12 +366,12 @@ ffuf -w ~/wordlists/parameters.txt -u http://ffuf.me/cd/param/data?FUZZ=1
 <details>
 <summary>fuff-testitulos:</summary>
 
-<img width="765" height="419" alt="image" src="https://github.com/user-attachments/assets/b4ea05ae-d731-41f8-a23c-d2efc687de2c" />
+<img width="761" height="410" alt="image" src="https://github.com/user-attachments/assets/672c4c02-5af4-4896-b1b9-1db9519349e1" />
 
 
 </details>
 
-* Skanni löytää puuttuvan parametrin: `debug`
+* Skannin palautti tulokseksi `debug`
   
 
 Lähde:
