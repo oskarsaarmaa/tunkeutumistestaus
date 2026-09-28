@@ -116,16 +116,13 @@ ffuf -u https://ffuf.io.fi/play/FUZZ -w /usr/share/wordlists/dirb/common.txt -mc
 
 ```
 
-<details>
-<summary>Testitulos:</summary>
 
-
-
-
-</details>
 
 * Suodatin pois turhat 404-statuskoodit (`-mc`), jolloin jäljelle jäivät vain olemassa olevat resurssit.
 
+Lähde:
+
+[Fuff.io](https://ffuf.io.fi/play)
 
 ## c2) The Interesting Non-200
 
@@ -136,13 +133,54 @@ ffuf -u https://ffuf.io.fi/play/FUZZ -w /usr/share/wordlists/dirb/common.txt -fc
 
 ```
 
-<details>
-<summary>Testitulos:</summary>
+
+Lähde:
+[Fuff.io](https://ffuf.io.fi/play)
+
+## c3) c3: Recursion (Rekursiivinen fuzzaus)
+
+Tavoite: Kun uusi hakemisto löydetään, ajetaan fuzzaus automaattisesti syvemmälle kyseisen hakemiston sisälle.
+
+```bash
+ffuf -u https://ffuf.io.fi/play/FUZZ -w /usr/share/wordlists/dirb/common.txt -recursion -recursion-depth 2 -e .php,.html -e .txt
+
+```
+* Rekursiivinen skannaus (`-recursion`) muodostaa puumaisen hakurakenteen. Jos löytyy `/admin/`, ffuf aloittaa automaattisesti uuden skannausajon osoitteeseen `/admin/FUZZ`. Syvyysrajoitin (`-recursion-depth 2`) estää ikuiset silmukat ja resurssien loppumisen.
 
 
+## c4) Virtual Hosts (Vhost-enumeration)
+
+Tavoite: Löytää samassa IP-osoitteessa/palvelimessa pyörivät muut virtuaali-isännät (Virtual Hosts), joilla ei välttämättä ole julkista DNS-tietuetta.
+
+```bash
+ffuf -u https://ffuf.io.fi/play -H "Host: FUZZ.ffuf.io.fi" -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fw
+
+```
+* HTTP/1.1-protokollassa `Host`-otsake määrittää, mille verkkosivustolle pyyntö ohjataan, kun samassa IP-osoitteessa pyörii useita sivustoja (Name-based Virtual Hosting). Fuzzaamalla `Host`-otsaketta voidaan löytää sisäisiä kehitysympäristöjä.
 
 
-</details>
+Lähde:
+[Fuff.io](https://ffuf.io.fi/play)
 
+## c9) The Login You Cannot Replay (Preflight & CSRF Token)
 
-## c3) 
+Tavoite: Ohittaa lomakkeen CSRF-suojaus ja suorittaa salasanan/käyttäjänimen fuzzaus automaattisella esipyynnöllä (Preflight).
+
+* Luon esipyyntötiedosto `preflight_req.txt`.
+  
+```bash
+GET /play/c9/login HTTP/1.1
+Host: ffuf.io.fi
+User-Agent: Mozilla/5.0
+
+```
+
+* Suoritetaan `ffuf`-komento, joka hakee tokenin säännöllisellä lausekkeella.
+
+```bash
+ffuf -u https://ffuf.io.fi/play/c9/login
+
+```
+
+Lähde:
+[Fuff.io](https://ffuf.io.fi/play)
