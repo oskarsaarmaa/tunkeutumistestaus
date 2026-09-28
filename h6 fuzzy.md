@@ -15,6 +15,8 @@ Lähde:
 
 [Find Hidden Web Directories](https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/)
 
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 
 
 ### Hoikkala (2023): ffuf README.md / Hoikkala (2020): Still Fuzzing Faster (U fool)
@@ -27,6 +29,9 @@ Lähde:
 Lähde:
 
 [Hoikkala 2023 ffuf - Fuzz Faster U Fool](https://github.com/ffuf/ffuf/blob/master/README.md)
+
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 
 
 > Voivatko suuret fuzzing-nopeudet (esim. satoja/tuhansia pyyntöjä sekunnissa) aiheuttaa Denial of Service (DoS) tilanteen?
@@ -135,6 +140,8 @@ Lähde:
 
 [Find Hidden Web Directories - Fuzz URLs with ffuf](https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/)
 
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 
 ## b) FuffMe-ympäristön asennus
 
@@ -229,6 +236,9 @@ Lähde:
 
 [Fuffme - Install Web Fuzzing Target on Debian](https://terokarvinen.com/2023/fuffme-web-fuzzing-target-debian/)
 
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
+
 
 ## c) Basic Content Discovery
 
@@ -255,6 +265,9 @@ ffuf -w $HOME/wordlists/common.txt -u http://localhost/cd/basic/FUZZ
 Lähde: 
 
 [Content Discovery - Basic](http://ffuf.me/cd/basic)
+
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 
 
 ## d) Content Discovery With Recursion
@@ -284,6 +297,9 @@ Lähde:
 
 [Content Discovery With Recursion](http://ffuf.me/cd/recursion)
 
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
+
 ## e) Content Discovery With File Extensions
 
 * Tavoite: Etsiä tiedostoja tiettyjen tiedostotarkenteiden perusteella (esim. .php, .txt, .log).
@@ -310,6 +326,9 @@ ffuf -w $HOME/wordlists/common.txt -u http://localhost/cd/ext/FUZZ -e .php,.txt,
 Lähde:
 
 [Content Discovery With File Extensions](http://ffuf.me/cd/ext)
+
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 
 ## f) No 404 Status
 
@@ -353,6 +372,8 @@ Lähde:
 
 [No 404 Status](http://ffuf.me/cd/no404)
 
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 ## g) Param Mining
 
 
@@ -377,6 +398,8 @@ ffuf -w ~/wordlists/parameters.txt -u http://ffuf.me/cd/param/data?FUZZ=1
 Lähde:
 
 [Param Mining](http://ffuf.me/cd/param)
+
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
 
 ## h) Rate Limited
 
@@ -425,6 +448,9 @@ Lähde:
 
 [Rate Limited](http://ffuf.me/cd/rate)
 
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
+
 
 ## i) Subdomains - Virtual Host Enumeration
 
@@ -468,6 +494,9 @@ ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://ffuf.me -fs
 Lähde:
 
 [Subdomains - Virtual Host Enumeration](http://ffuf.me/sub/vhost)
+
+[Tero Karvinen - Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
+
 
 ## Yhteenveto
 
