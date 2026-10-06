@@ -505,3 +505,112 @@ Harjoituksessa syvennyttiin ffuf-työkalun käyttöön web-sovellusten tietoturv
 * Suodatuksen merkitys: Raaka fuzzgaus tuottaa usein satoja vääriä positiivisia vastauksia. Tuloksien  suodattaminen koon (`-fs`), tilakoodin (`-fc`) tai rivimäärän (`-fl`) perusteella on kriittistä tulosten analysoinnissa.
 * Monipuolisuus: Web-fuzzaus ei rajoitu vain hakemistoihin (`/FUZZ`), vaan ulottuu otsakkeisiin (`Host: FUZZ`), parametreihin (`?FUZZ=1`) ja pyyntömenetelmiin (`POST`).
 * Eettisyys ja suorituskyky: Suurien pyyntömäärien hallinta (`-p`, `-t`) on välttämätöntä reaalimaailman testeissä palveluiden ylikuormittamisen välttämiseksi.
+
+
+
+
+1. Verkon ja maalin kartoitus:
+   
+```bash
+# Tarkista oma IP-osoite ja verkkoalue
+ip a
+
+# Etsi aktiiviset laitteet lähiverkosta
+sudo nmap -sn 192.168.1.0/24
+
+# Tallenna maalin IP-osoite ympäristömuuttujaan
+export TARGET="192.168.1.X"
+```
+
+2. skannaus:
+Perusskannaus: Avoimet portit, palveluversiot ja perusskriptit:
+
+```bash
+
+nmap -sC -sV -oA initial_scan $TARGET
+```
+
+
+Kattava skannaus kaikille 65535 portille:
+
+```bash
+nmap -p- --min-rate 1000 $TARGET
+
+```
+
+3.
+
+Tarkista otsaketiedot ja lähdekoodi:
+```bash
+curl -I http://$TARGET
+curl -s http://$TARGET | grep -i "flag"
+
+```
+
+
+ 
+Etsi piilotettuja hakemistoja ja tiedostoja Gobusterilla:
+```bash
+gobuster dir -u http://$TARGET -w /usr/share/wordlists/dirb/common.txt -x txt,html,php
+
+```
+
+
+ Vaihtoehtoinen hakemistomurskain (ffuf):
+```bash
+ffuf -u http://$TARGET/FUZZ -w /usr/share/wordlists/dirb/common.txt
+
+```
+
+4.
+
+Etsi valmiita haavoittuvuuksia palveluversioille:
+```bash
+searchsploit "palvelun_nimi versio"
+
+```
+
+
+Anonyymi FTP-kirjautuminen (jos portti 21 auki):
+
+
+```bash
+ftp $TARGET
+
+```
+
+SSH-yhdistäminen (jos tunnukset löydetty):
+
+```bash
+ssh kayttaja@$TARGET
+
+```
+
+Avaa kuuntelija omalla koneella reverse shellia varten:
+
+```bash
+nc -lvnp 4444
+
+```
+
+5.
+
+Lue lipputiedosto suoraan (jos lukuoikeudet riittävät):
+
+```bash
+cat /root/flag.txt 2>/dev/null || cat /home/*/user.txt
+
+```
+Etsi kaikki "flag"-sanalla varustetut tiedostot:
+```bash
+find / -name "*flag*" 2>/dev/null
+
+```
+
+
+Tallennus suoritetuista komennoista:
+```bash
+history > komentohistoria.txt
+
+```
+
